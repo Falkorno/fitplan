@@ -1,0 +1,100 @@
+:root {
+  --text-micro: 0.65rem;
+  --text-caption: 0.7rem;
+  --text-small: 0.75rem;
+  --text-body: 0.82rem;
+}
+
+/* Keep supporting copy readable and consistent across dense cards. */
+.theme-options small,
+.wfh-day small,
+.personal-workouts small,
+.dashboard-kpi small,
+.dashboard-bars small,
+.dashboard-bars b,
+.dashboard-donut small,
+.sport-legend small,
+.dashboard-goals small,
+.dashboard-ring b,
+.recovery-stats small,
+.dashboard-list small,
+.dashboard-records small,
+.activity-summary small,
+.activity-list article small,
+.activity-list article > span,
+.activity-pagination > span small,
+.activity-records span,
+.running-records span,
+.activity-records small,
+.running-records small,
+.record-note,
+.adaptive-overview span,
+.adaptive-overview small,
+.distance-maths span,
+.target-inputs label > span,
+.run-structure span,
+.run-structure small,
+.target-summary-metrics small {
+  font-size: var(--text-micro);
+  line-height: 1.35;
+}
+
+.eyebrow,
+.habit-weekdays,
+.habit-date,
+.today-fields label,
+.today-label,
+.plan-explanation li,
+.status-chip,
+.app-status button,
+.dashboard-card-head > span,
+.dashboard-card-head > button,
+.dashboard-kpi p,
+.sport-legend > span,
+.wellbeing-score p,
+.dashboard-empty,
+.history-summary span,
+.history-card > p,
+.history-actions .secondary,
+.activity-message,
+.activity-empty,
+.activity-more,
+.activity-pagination > span,
+.goal-days legend,
+.growth-grid label,
+.milestone-grid span,
+.target-summary-copy small {
+  font-size: var(--text-caption);
+  line-height: 1.4;
+}
+
+.today-expand,
+.today-actions button,
+.today-habit,
+.tomorrow-preview > span,
+.dashboard-list b,
+.activity-summary b,
+.activity-list article b,
+.history-section-tabs button,
+.missed-row,
+.calendar-session,
+.target-advice b {
+  font-size: var(--text-small);
+  line-height: 1.35;
+}
+
+@media (max-width: 640px) {
+  .nav {
+    font-size: var(--text-micro);
+  }
+
+  .habit-weekdays span,
+  .habit-date,
+  .status-chip,
+  .app-status button,
+  .plan-explanation li,
+  .history-section-tabs button,
+  .activity-match {
+    font-size: var(--text-micro);
+  }
+}

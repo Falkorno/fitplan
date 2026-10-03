@@ -1,0 +1,446 @@
+﻿/* Guarded production redesign. Enabled with ?ui=next in development or VITE_UI_NEXT=true in a preview build. */
+.ui-next{--bg:color-mix(in srgb,#F2F4F3 42%,white);--panel:#F2F4F3;--ink:#120D31;--muted:#120D31;--line:#F2F4F3;--soft:color-mix(in srgb,#F2F4F3 72%,#F2F4F3);--today-bg:#F2F4F3;--today-ink:#120D31;--today-muted:#120D31;--today-border:#F2F4F3;--today-card:color-mix(in srgb,#4A7B9D 12%,#F2F4F3);--today-field:color-mix(in srgb,#F2F4F3 75%,white);--today-shadow:#120D311F;--sport-run:#4A7B9D;--sport-cycle:#4A7B9D;--sport-strength:#4A7B9D;--sport-rest:#DBE4EE;--state-complete:#4A7B9D;--state-complete-ink:#120D31;--state-warning:#749C75;--state-danger:#749C75;color-scheme:light}
+.dark .ui-next{--bg:#120D31;--panel:color-mix(in srgb,#120D31 86%,#4A7B9D);--ink:#F2F4F3;--muted:#F2F4F3;--line:color-mix(in srgb,#4A7B9D 45%,#120D31);--soft:color-mix(in srgb,#120D31 74%,#4A7B9D);--today-bg:color-mix(in srgb,#120D31 82%,#4A7B9D);--today-ink:#F2F4F3;--today-muted:#F2F4F3;--today-border:#4A7B9D;--today-card:color-mix(in srgb,#120D31 70%,#4A7B9D);--today-field:color-mix(in srgb,#120D31 78%,#4A7B9D);--today-shadow:#120D31CC;color-scheme:dark}
+.ui-next .app-header{border-color:var(--line);background:color-mix(in srgb,var(--bg) 94%,transparent);box-shadow:none}.ui-next .app-brand .font-display{color:var(--ink)}.ui-next .app-brand-subtitle{color:var(--muted)}.ui-next .app-header .icon-btn{border-color:var(--line);background:var(--panel);color:var(--ink)}
+.ui-next .app-nav{border-color:var(--line);background:var(--panel);box-shadow:0 10px 28px #120D3124}.ui-next .app-nav .nav{color:var(--muted)}.ui-next .app-nav .nav.active{border:0;background:transparent;color:#4A7B9D;box-shadow:none}.ui-next .app-nav .nav.active:after{position:absolute;bottom:.2rem;width:1.5rem;height:2px;border-radius:999px;background:#4A7B9D;content:""}.ui-next .app-nav .nav{position:relative}
+.ui-next .panel,.ui-next .dashboard-card,.ui-next .history-card,.ui-next .history-summary,.ui-next .activity-records article,.ui-next .running-records article,.ui-next .load-panel{border-color:var(--line);background:var(--panel);box-shadow:0 4px 16px #120D3114}.ui-next .primary{border-color:#4A7B9D;background:#4A7B9D;color:#120D31;box-shadow:none}.ui-next .secondary,.ui-next .icon-btn{border-color:var(--line);background:var(--panel);color:var(--ink)}.ui-next button:focus-visible,.ui-next input:focus-visible,.ui-next select:focus-visible,.ui-next textarea:focus-visible{outline:3px solid #4A7B9D;outline-offset:2px}
+.ui-next .dashboard-welcome .primary{display:none}.ui-next .dashboard-kpis{display:none}.ui-next-weekly{display:grid;gap:.45rem}.ui-next-summary-head{display:flex;align-items:center;justify-content:space-between}.ui-next-summary-head>span{color:var(--muted);font-size:.62rem;font-weight:900;letter-spacing:.13em}.ui-next-summary-head button{display:flex;align-items:center;gap:.2rem;color:#4A7B9D;font-size:.7rem;font-weight:800}.dark .ui-next-summary-head button{color:#F2F4F3}.ui-next-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem}.ui-next-summary-grid article{display:grid;grid-template-columns:2.25rem minmax(0,1fr);align-items:center;gap:.05rem .55rem;border:1px solid var(--line);border-radius:1rem;background:var(--panel);padding:.8rem}.ui-next-summary-grid article>span{display:grid;width:2.25rem;height:2.25rem;grid-row:1/3;place-items:center;border-radius:.7rem;background:#4A7B9D;color:#F2F4F3}.ui-next-summary-grid small{color:var(--muted);font-size:.58rem;font-weight:900;letter-spacing:.08em}.ui-next-summary-grid strong{font-family:var(--font-display);font-size:1rem}.ui-next-goal{display:flex;width:100%;align-items:center;gap:.7rem;border:1px solid var(--line);border-radius:1rem;background:var(--panel);padding:.8rem;text-align:left}.ui-next-goal>span{display:grid;width:2.35rem;height:2.35rem;place-items:center;border-radius:.7rem;background:#4A7B9D;color:#120D31}.ui-next-goal>div{display:grid;min-width:0;flex:1}.ui-next-goal small{color:#4A7B9D;font-size:.55rem;font-weight:900;letter-spacing:.1em}.dark .ui-next-goal small{color:#4A7B9D}.ui-next-goal b{font-size:.78rem}.ui-next-goal p{margin-top:.1rem;color:var(--muted);font-size:.65rem}
+.ui-next .dashboard-sport-icon,.ui-next .type-icon,.ui-next .activity-type,.ui-next .goal-icon,.ui-next .coach-v2-brand>span,.ui-next .coach-utilities>button>span,.ui-next .workout-review-icon{background:#4A7B9D!important;color:#F2F4F3!important}.ui-next .activity-summary>button>svg,.ui-next .load-heading>svg{color:#4A7B9D}.dark .ui-next .activity-summary>button>svg,.dark .ui-next .load-heading>svg{color:#F2F4F3}
+.ui-next .today{border:1px solid var(--today-border);background:var(--today-bg);color:var(--today-ink);box-shadow:0 4px 16px var(--today-shadow)}.ui-next .today-session{border-color:var(--line);background:var(--today-card)}.ui-next .today-expand,.ui-next .today-actions button,.ui-next .tomorrow-preview>span,.ui-next .today-habit{color:var(--today-muted)}.ui-next .today-actions button,.ui-next .today-habit{border-color:var(--line)}.ui-next .today-fields{border-color:var(--line)}.ui-next .today-fields label{color:var(--muted)}.ui-next .today-fields input,.ui-next .today-fields textarea{border-color:var(--line);background:var(--today-field);color:var(--ink)}.ui-next .today-footer{border-color:var(--line)}
+.ui-next .week-head .eyebrow,.ui-next .eyebrow{color:var(--muted)}.ui-next .day{border-color:var(--line);background:var(--panel)}.ui-next .day.is-today{border:2px solid #4A7B9D;box-shadow:none}.ui-next #full-schedule .today-label{background:#4A7B9D;color:#120D31}.ui-next #full-schedule .session{border-left-color:#4A7B9D;background:var(--soft)}.ui-next #full-schedule .session.recovery{border-left-color:#DBE4EE}.ui-next #full-schedule .complete-action.done,.ui-next .check.done,.ui-next .mini-check.done{border-color:#4A7B9D;background:#4A7B9D;color:#120D31;box-shadow:none}.ui-next #full-schedule .session-menu.open .session-menu-trigger{border-color:#4A7B9D;color:#4A7B9D}.dark .ui-next #full-schedule .session-menu.open .session-menu-trigger{color:#4A7B9D}.ui-next #full-schedule .activity-metric{border-color:var(--line);background:color-mix(in srgb,#F2F4F3 72%,var(--panel));color:var(--ink)}.ui-next #full-schedule .activity-tag{border-color:#4A7B9D;background:color-mix(in srgb,#4A7B9D 18%,var(--panel));color:color-mix(in srgb,#4A7B9D 65%,#120D31)}.dark .ui-next #full-schedule .activity-tag{color:#F2F4F3}
+.ui-next .coach-focus{border-color:#4A7B9D;background:color-mix(in srgb,#4A7B9D 12%,var(--panel))}.ui-next .coach-focus-evidence{border-left-color:#4A7B9D}.ui-next .coach-v2-state.attention{border-color:#4A7B9D;background:color-mix(in srgb,#4A7B9D 14%,var(--panel));color:#4A7B9D}.dark .ui-next .coach-v2-state.attention{color:#4A7B9D}.ui-next .workout-review{border-color:#4A7B9D;background:color-mix(in srgb,#4A7B9D 10%,var(--panel))}.ui-next .workout-review-metrics span{border-color:var(--line);background:var(--soft);color:var(--ink)}
+.ui-next .history-section-tabs{border-color:var(--line);background:var(--soft)}.ui-next .history-section-tabs button.active,.ui-next .history-filters button.active,.ui-next .activity-summary>button.active{border-color:#4A7B9D;background:#4A7B9D;color:#120D31;box-shadow:none}.ui-next .activity-summary>button.active:after{display:none}.ui-next .history-filters{gap:.45rem}.ui-next .history-filters button{min-height:2.35rem;border-color:var(--line);background:var(--panel);padding:.45rem .8rem}.ui-next .history-filters button.active{border-color:#4A7B9D;background:#4A7B9D;color:#120D31}.ui-next .activity-list article{border-color:var(--line)}.ui-next .activity-type.run,.ui-next .activity-type.walk,.ui-next .activity-type.cycle{background:#4A7B9D;color:#F2F4F3}.ui-next .activity-match{border-color:#4A7B9D;color:#4A7B9D}.dark .ui-next .activity-match{color:#F2F4F3}
+.ui-next .modal{border:1px solid var(--line);background:var(--panel);color:var(--ink)}.ui-next .modal-bg{background:#120D31CC}.ui-next .form-grid input,.ui-next .form-grid select,.ui-next .form-grid textarea,.ui-next input,.ui-next select,.ui-next textarea{border-color:var(--line);background:var(--bg);color:var(--ink)}.ui-next input::placeholder,.ui-next textarea::placeholder{color:var(--muted);opacity:1}.ui-next .session-menu-panel,.ui-next .habit-day-sheet{background:var(--panel)!important}
+.ui-next .habit-dot,.ui-next .habit-sheet-dot,.ui-next .today-habit>span{border-color:#4A7B9D!important}.ui-next .habit-dot.done,.ui-next .habit-sheet-list>button.done .habit-sheet-dot,.ui-next .today-habit.done>span{border-color:#4A7B9D!important;background:var(--habit-color)!important}.dark .ui-next .habit-dot,.dark .ui-next .habit-sheet-dot,.dark .ui-next .today-habit>span{border-color:#4A7B9D!important}
+.ui-next .wfh-day.selected,.ui-next .toggle:checked{border-color:#4A7B9D;background:#4A7B9D;color:#120D31;box-shadow:none}.ui-next .plan-explanation{border-color:#4A7B9D;background:color-mix(in srgb,#4A7B9D 8%,var(--panel))}.ui-next .plan-explanation-head>span{background:#4A7B9D;color:#F2F4F3}
+@media(max-width:700px){.ui-next-summary-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:.4rem}.ui-next-summary-grid article{grid-template-columns:1fr;justify-items:center;padding:.65rem .35rem;text-align:center}.ui-next-summary-grid article>span{width:2rem;height:2rem;grid-row:auto}.ui-next-summary-grid strong{font-size:.78rem}.ui-next-summary-grid small{font-size:.5rem}.ui-next .dashboard-welcome h1{font-size:1.75rem}.ui-next .app-nav{background:var(--panel);box-shadow:0 -5px 18px #120D311F}}
+
+.ui-next .activity-open{cursor:pointer}.ui-next .activity-open:hover{background:var(--soft)}.ui-next .activity-open:focus-visible{outline:3px solid #4A7B9D;outline-offset:2px}.ui-next-activity-modal{width:min(600px,100%)}.ui-next-activity-modal>header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--line);padding-bottom:.8rem}.ui-next-activity-modal>header p:last-child{margin-top:.2rem;color:var(--muted);font-size:.72rem}.activity-map{width:100%;max-height:15rem;margin-top:1rem;border:1px solid var(--line);border-radius:.9rem;object-fit:cover}.activity-detail-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.55rem;margin-top:1rem}.activity-detail-grid article{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:.12rem .4rem;border:1px solid var(--line);border-radius:.75rem;background:var(--soft);padding:.65rem}.activity-detail-grid article>svg{grid-row:1/3;color:#4A7B9D}.dark .activity-detail-grid article>svg{color:#F2F4F3}.activity-detail-grid small{color:var(--muted);font-size:.55rem;font-weight:900;letter-spacing:.06em}.activity-detail-grid b{font-size:.74rem}.activity-detail-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.8rem}.activity-detail-tags span{border:1px solid #4A7B9D;border-radius:999px;background:color-mix(in srgb,#4A7B9D 16%,var(--panel));padding:.3rem .5rem;color:var(--ink);font-size:.62rem;font-weight:800}.activity-strava-link{width:100%;margin-top:1rem}@media(max-width:640px){.ui-next-activity-modal{width:100%;border-radius:1.1rem 1.1rem 0 0}.ui-next .modal-bg:has(.ui-next-activity-modal){align-items:end;padding:0}.activity-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.ui-next .coach-change-preview{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:.5rem;margin:.75rem 0}.ui-next .coach-change-preview>div{display:grid;border:1px solid var(--line);border-radius:.7rem;background:var(--panel);padding:.6rem}.ui-next .coach-change-preview span{color:var(--muted);font-size:.55rem;font-weight:900;letter-spacing:.08em}.ui-next .coach-change-preview b{margin-top:.2rem;font-size:.68rem;line-height:1.35}.ui-next .coach-change-preview>svg{transform:rotate(-90deg);color:#4A7B9D}@media(max-width:520px){.ui-next .coach-change-preview{grid-template-columns:1fr}.ui-next .coach-change-preview>svg{justify-self:center;transform:none}}
+
+/* UI-next owns its shell and screen composition rather than reskinning the legacy header. */
+.ui-next>.app-header,.ui-next>.app-nav{display:none!important}.ui-next{min-height:100vh}.ui-next>main{width:min(100%,680px);padding-top:.85rem}.ui-next-app-top{position:sticky;top:0;z-index:30;display:flex;align-items:flex-end;justify-content:space-between;min-height:6.2rem;border-bottom:0;background:color-mix(in srgb,var(--bg) 95%,transparent);padding:1rem max(1rem,calc((100vw - 680px)/2 + 1rem)) .8rem;backdrop-filter:blur(12px)}.ui-next-app-top>div{display:grid}.ui-next-app-top>div>span{margin-bottom:.65rem;color:#4A7B9D;font-family:var(--font-display);font-size:.78rem;font-weight:900}.ui-next-app-top h1{font-family:var(--font-display);font-size:1.8rem;font-weight:850;line-height:1}.ui-next-app-top .icon-btn{border-color:var(--line);background:var(--panel);color:var(--ink)}.ui-next-bottom-nav{position:fixed;right:0;bottom:0;left:0;z-index:100;display:grid;height:calc(4.8rem + env(safe-area-inset-bottom));grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);background:var(--panel);padding:.45rem max(.65rem,calc((100vw - 680px)/2 + .65rem)) calc(.5rem + env(safe-area-inset-bottom));box-shadow:0 -6px 18px #120D311A}.ui-next-bottom-nav button{position:relative;display:grid;place-items:center;gap:.14rem;border-radius:.65rem;color:var(--muted);font-size:.62rem;font-weight:700}.ui-next-bottom-nav button.active{color:#4A7B9D}.ui-next-bottom-nav button.active:after{position:absolute;bottom:0;width:1.5rem;height:2px;border-radius:999px;background:#4A7B9D;content:""}.dark .ui-next-app-top,.dark .ui-next-bottom-nav{background:#120D31}.ui-next .fitness-dashboard{gap:.7rem}.ui-next .dashboard-welcome{display:none}.ui-next .dashboard-main-grid,.ui-next .dashboard-records{display:none}.ui-next-today-card,.ui-next-habits-card{width:100%;border:1px solid var(--line);border-radius:1rem;background:var(--panel);padding:.9rem;text-align:left}.ui-next-card-head{display:flex;align-items:center;justify-content:space-between;gap:.75rem}.ui-next-card-head small{color:#4A7B9D;font-size:.55rem;font-weight:900;letter-spacing:.1em}.dark .ui-next-card-head small{color:#4A7B9D}.ui-next-card-head h2{margin-top:.15rem;font-family:var(--font-display);font-size:1rem;font-weight:800}.ui-next-card-head button{display:flex;align-items:center;gap:.2rem;color:#4A7B9D;font-size:.65rem;font-weight:800}.dark .ui-next-card-head button{color:#F2F4F3}.ui-next-today-card>p{margin-top:.6rem;border-top:1px solid var(--line);padding-top:.6rem;color:var(--muted);font-size:.7rem}.ui-next-habits-card>div:last-child{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem;margin-top:.75rem}.ui-next-habits-card>div:last-child>span{display:flex;min-width:0;align-items:center;gap:.4rem;color:var(--ink);font-size:.65rem}.ui-next-habits-card i{width:.85rem;height:.85rem;flex:none;border:1.5px solid;border-radius:50%}.ui-next-habits-card b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ui-next .history-hub-head .eyebrow{display:none}.ui-next .history-hub-head h1{font-size:1.75rem}.ui-next .history-hub-head>p:last-child{color:var(--muted)}@media(max-width:700px){.ui-next>main{padding:0 1rem calc(5.8rem + env(safe-area-inset-bottom))}.ui-next-app-top{min-height:5.8rem;padding:.8rem 1rem .7rem}.ui-next-app-top h1{font-size:1.65rem}.ui-next-app-top>div>span{margin-bottom:.5rem}.ui-next-habits-card>div:last-child{grid-template-columns:1fr 1fr}}
+
+/* Real-data density pass: prioritise the plan, progressively de-emphasise supporting analysis. */
+.ui-next .week-page>.week-head{order:1}.ui-next .week-page>.today{display:none}.ui-next .week-page>.week-progress{order:2}.ui-next .week-page>.target-summary{order:3}.ui-next .week-page>div:has(#full-schedule){order:4}.ui-next .week-page>.coach-panel{order:5}.ui-next .week-page>.plan-explanation{order:6}.ui-next .week-page>.insights-drawer{order:7}.ui-next .week-head-copy .eyebrow,.ui-next .week-head-copy h1{display:none}.ui-next .week-head{align-items:center;border:1px solid var(--line);border-radius:1rem;background:var(--panel);padding:.75rem}.ui-next .week-head-copy>p:last-child{margin:0;font-weight:800;color:var(--ink)}.ui-next .week-progress{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:.55rem;padding:.8rem}.ui-next .week-progress-main{display:flex;align-items:center;gap:.65rem}.ui-next .week-progress-main .eyebrow{display:none}.ui-next .week-progress-main .section-title{font-size:.8rem}.ui-next .week-progress-bar{grid-column:1/-1;margin:0}.ui-next .week-progress-stats{grid-column:1/-1;margin:0}.ui-next .target-summary{display:flex;align-items:center;gap:.75rem;padding:.8rem}.ui-next .target-summary-copy{min-width:0;flex:1}.ui-next .target-summary-copy .eyebrow{display:none}.ui-next .target-summary-copy .section-title{font-size:.82rem}.ui-next .target-summary-metrics{display:none}.ui-next .target-summary .target-edit{flex:none}.ui-next #full-schedule>div:first-child{margin-bottom:.65rem}.ui-next #full-schedule .schedule-week{gap:.55rem}.ui-next #full-schedule .day{padding:.65rem}.ui-next .coach-panel{padding:.9rem}.ui-next .coach-v2-head{margin-bottom:.65rem}.ui-next .coach-utilities{margin-top:.65rem}.ui-next .coach-utilities>button{padding:.65rem}.ui-next .plan-explanation-head{padding:.7rem .8rem}.ui-next .insights-drawer{padding:.75rem}.ui-next>main>.eyebrow,.ui-next>main>h1{display:none}.ui-next .history-hub-head h1{display:none}.ui-next .history-hub-head>p:last-child{margin-top:0}.ui-next .history-section-tabs{margin-top:.65rem;margin-bottom:.8rem}.ui-next .settings-status{margin-top:0}.ui-next .settings-row{padding:.9rem 0}
+@media(max-width:700px){.ui-next .week-head{align-items:stretch}.ui-next .week-head-actions{grid-template-columns:auto minmax(0,1fr) auto}.ui-next .week-progress-stats{display:flex;overflow-x:auto}.ui-next .target-summary{align-items:flex-start}.ui-next .target-summary .target-edit{padding:.5rem}.ui-next .coach-v2-state{font-size:.55rem}.ui-next .coach-utilities{grid-template-columns:1fr}.ui-next .history-section-tabs{position:sticky;top:5.8rem;z-index:10;background:var(--soft)}}
+
+/* Prevent legacy narrow-screen target rules from collapsing the UI-next summary. */
+.ui-next .target-summary{display:grid!important;grid-template-columns:minmax(0,1fr) max-content!important;min-height:0!important;align-items:center!important;gap:.65rem!important;overflow:visible!important}.ui-next .target-summary-copy{width:auto!important;min-width:0!important;max-width:none!important}.ui-next .target-summary-copy .section-title{max-width:100%;overflow-wrap:normal;word-break:normal;white-space:normal;line-height:1.3}.ui-next .target-summary .target-edit{width:auto!important;max-width:none!important;min-width:max-content!important;margin:0!important;align-self:center!important;white-space:nowrap!important}.ui-next .target-summary-metrics{display:none!important}@media(max-width:380px){.ui-next .target-summary{grid-template-columns:1fr!important}.ui-next .target-summary .target-edit{width:100%!important;min-width:0!important}}
+
+
+/* UI-next information architecture refinements */
+.ui-next-goal-empty{border-style:dashed}.ui-next-goal-empty>span{background:#4A7B9D;color:#F2F4F3}
+.ui-next-today-sessions{display:grid;gap:.45rem;margin-top:.7rem;border-top:1px solid var(--line);padding-top:.65rem}
+.ui-next-today-sessions>button{display:flex;width:100%;min-width:0;align-items:center;justify-content:space-between;gap:.6rem;border:1px solid var(--line);border-radius:.75rem;background:var(--soft);padding:.6rem .65rem;text-align:left}
+.ui-next-today-sessions>button>span{display:grid;min-width:0}.ui-next-today-sessions b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.72rem}.ui-next-today-sessions small{margin-top:.12rem;color:var(--muted);font-size:.6rem}
+.ui-next-coach-shortcuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}.ui-next-coach-shortcuts>button{display:grid;grid-template-columns:2.25rem minmax(0,1fr) auto;align-items:center;gap:.55rem;border:1px solid var(--line);border-radius:1rem;background:var(--panel);padding:.8rem;text-align:left}.ui-next-coach-shortcuts>button>span{display:grid;width:2.25rem;height:2.25rem;place-items:center;border-radius:.7rem;background:#4A7B9D;color:#F2F4F3}.ui-next-coach-shortcuts>button>div{display:grid;min-width:0}.ui-next-coach-shortcuts small{color:#4A7B9D;font-size:.52rem;font-weight:900;letter-spacing:.09em}.dark .ui-next-coach-shortcuts small{color:#4A7B9D}.ui-next-coach-shortcuts b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.68rem}.ui-next-coach-shortcuts p{margin-top:.1rem;color:var(--muted);font-size:.58rem;line-height:1.35}
+.ui-next-progress-overview{display:grid;gap:.8rem;margin-top:.7rem;border:1px solid var(--line);border-radius:1rem;background:var(--panel);padding:.9rem}.ui-next-progress-title{display:flex;align-items:end;justify-content:space-between;gap:.75rem}.ui-next-progress-title small{color:#4A7B9D;font-size:.55rem;font-weight:900;letter-spacing:.1em}.dark .ui-next-progress-title small{color:#4A7B9D}.ui-next-progress-title h2{margin-top:.12rem;font-family:var(--font-display);font-size:1rem;font-weight:800}.ui-next-progress-title>span{color:var(--muted);font-size:.62rem}.ui-next-progress-metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.45rem}.ui-next-progress-metrics article{display:grid;border:1px solid var(--line);border-radius:.7rem;background:var(--soft);padding:.6rem}.ui-next-progress-metrics b{font-family:var(--font-display);font-size:.8rem}.ui-next-progress-metrics span{margin-top:.12rem;color:var(--muted);font-size:.54rem}.ui-next-progress-bars{display:grid;gap:.42rem}.ui-next-progress-bars>div{display:grid;grid-template-columns:3.5rem minmax(0,1fr) 2.5rem;align-items:center;gap:.5rem;font-size:.56rem}.ui-next-progress-bars>div>span{color:var(--muted)}.ui-next-progress-bars i{height:.4rem;overflow:hidden;border-radius:999px;background:var(--soft)}.ui-next-progress-bars em{display:block;height:100%;min-width:2px;border-radius:inherit;background:#4A7B9D}.ui-next-progress-bars b{text-align:right}
+.ui-next-more-index{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.45rem;margin:.2rem 0 .8rem}.ui-next-more-index a{display:grid;min-height:3rem;place-items:center;border:1px solid var(--line);border-radius:.75rem;background:var(--panel);padding:.5rem;color:var(--ink);font-size:.62rem;font-weight:800;text-align:center}.ui-next-more-index a:focus-visible{outline:3px solid #4A7B9D;outline-offset:2px}.ui-next .settings-group-heading{scroll-margin-top:6.5rem;border-top:0;background:color-mix(in srgb,#4A7B9D 10%,var(--panel));padding:.7rem .8rem}.ui-next .settings-panel{display:grid;gap:.55rem;border:0;background:transparent;padding:0;box-shadow:none}.ui-next .settings-row{border:1px solid var(--line);border-radius:.8rem;background:var(--panel);padding:.8rem}
+.ui-next .coach-tools{margin-top:.65rem;border-top:1px solid var(--line);padding-top:.6rem}.ui-next .coach-tools>summary{display:flex;cursor:pointer;list-style:none;align-items:center;justify-content:space-between;color:var(--muted);font-size:.66rem;font-weight:800}.ui-next .coach-tools>summary::-webkit-details-marker{display:none}.ui-next .coach-tools[open]>summary svg{transform:rotate(180deg)}.ui-next .coach-tools .coach-utilities{margin-top:.6rem}
+@media(max-width:560px){.ui-next-coach-shortcuts{grid-template-columns:1fr}.ui-next-progress-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.ui-next-more-index{grid-template-columns:repeat(2,minmax(0,1fr))}.ui-next-progress-title{align-items:start;flex-direction:column}.ui-next-progress-title>span{margin-top:-.4rem}}
+@media(max-width:360px){.ui-next-summary-grid{grid-template-columns:1fr}.ui-next-coach-shortcuts>button{grid-template-columns:2rem minmax(0,1fr) auto}.ui-next-coach-shortcuts>button>span{width:2rem;height:2rem}.ui-next-progress-bars>div{grid-template-columns:3.2rem minmax(0,1fr) 2.2rem}}
+
+
+/* UI-next progress clarity and mobile sheet safety */
+.ui-next-progress-legend{display:flex;align-items:center;justify-content:space-between;gap:.75rem;color:var(--muted);font-size:.55rem}.ui-next-progress-legend>span{display:flex;align-items:center;gap:.35rem;font-weight:800}.ui-next-progress-legend>span>i{width:.65rem;height:.65rem;border-radius:.2rem;background:#4A7B9D}.ui-next-progress-legend>small{text-align:right}.ui-next-progress-bars>div{grid-template-columns:3.5rem minmax(0,1fr) 5.6rem}.ui-next-progress-bars>div>b{white-space:nowrap}.ui-next-progress-bars>div>b>small{margin-left:.2rem;color:var(--muted);font-weight:600}
+.ui-next .modal{max-height:calc(100dvh - max(1rem,env(safe-area-inset-top)));overflow-y:auto;overscroll-behavior:contain}.ui-next .modal-bg{padding-top:max(1rem,env(safe-area-inset-top));padding-bottom:env(safe-area-inset-bottom)}
+@media(max-width:640px){.ui-next .modal-bg{align-items:flex-end;padding-right:0;padding-bottom:0;padding-left:0}.ui-next .modal{max-height:calc(100dvh - max(1rem,env(safe-area-inset-top)));padding-bottom:calc(1.15rem + env(safe-area-inset-bottom))}.ui-next .modal input,.ui-next .modal select,.ui-next .modal textarea{font-size:16px}.ui-next-progress-legend{align-items:flex-start;flex-direction:column}.ui-next-progress-legend>small{text-align:left}}
+@media(max-width:360px){.ui-next-progress-bars>div{grid-template-columns:3.1rem minmax(0,1fr) 5rem}.ui-next-progress-bars>div>b>small{display:block;margin:0}}
+
+
+/* Approved redesign parity: review, Today actions, period progress and More hub */
+.activity-review-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem;margin-top:.85rem}.activity-review-grid article,.activity-next-action{border:1px solid var(--line);border-radius:.8rem;background:var(--soft);padding:.7rem}.activity-review-grid small,.activity-next-action small{color:#4A7B9D;font-size:.52rem;font-weight:900;letter-spacing:.08em}.dark .activity-review-grid small,.dark .activity-next-action small{color:#4A7B9D}.activity-review-grid b,.activity-next-action b{display:block;margin-top:.2rem;font-size:.72rem}.activity-review-grid p{margin-top:.2rem;color:var(--muted);font-size:.62rem;line-height:1.45}.activity-next-action{margin-top:.55rem;border-color:#4A7B9D;background:color-mix(in srgb,#4A7B9D 12%,var(--panel))}.activity-review-evidence{margin-top:.6rem;color:var(--muted);font-size:.62rem}.activity-review-evidence summary{cursor:pointer;font-weight:800}.activity-review-evidence p{margin-top:.35rem;line-height:1.45}
+.ui-next-today-sessions>article{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:.45rem;border:1px solid var(--line);border-radius:.75rem;background:var(--soft);padding:.4rem}.ui-next-session-copy{display:flex;min-width:0;align-items:center;justify-content:space-between;gap:.5rem;padding:.2rem;text-align:left}.ui-next-session-copy>span{display:grid;min-width:0}.ui-next-session-copy b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.72rem}.ui-next-session-copy small{margin-top:.12rem;color:var(--muted);font-size:.6rem}.ui-next-session-done{display:flex;min-height:2.1rem;align-items:center;gap:.25rem;border:1px solid #4A7B9D;border-radius:.6rem;padding:.35rem .5rem;color:#4A7B9D;font-size:.58rem;font-weight:800}.dark .ui-next-session-done{color:#F2F4F3}.ui-next-session-done.completed{border-color:#4A7B9D;background:#4A7B9D;color:#120D31}
+.ui-next-breakdown{width:min(30rem,100%)}.ui-next-breakdown>header{display:flex;align-items:center;justify-content:space-between}.ui-next-breakdown>header small{color:#4A7B9D;font-size:.55rem;font-weight:900}.ui-next-breakdown>header h2{font-family:var(--font-display);font-size:1.15rem}.ui-next-breakdown-total{display:flex;align-items:end;justify-content:space-between;margin-top:1rem;border-radius:.8rem;background:color-mix(in srgb,#4A7B9D 14%,var(--panel));padding:.8rem}.ui-next-breakdown-total b{font-family:var(--font-display);font-size:1.2rem}.ui-next-breakdown-total span{color:var(--muted);font-size:.65rem}.ui-next-breakdown-list{display:grid;gap:.45rem;margin-top:.65rem}.ui-next-breakdown-list article{display:grid;grid-template-columns:2rem minmax(0,1fr) auto;align-items:center;gap:.55rem;border:1px solid var(--line);border-radius:.7rem;padding:.6rem}.ui-next-breakdown-list article>svg{color:#4A7B9D}.dark .ui-next-breakdown-list article>svg{color:#F2F4F3}.ui-next-breakdown-list article>div{display:grid}.ui-next-breakdown-list b{font-size:.7rem}.ui-next-breakdown-list span{color:var(--muted);font-size:.58rem}.ui-next-breakdown-list strong{font-size:.68rem}.ui-next-week-compare{display:grid;margin-top:.65rem;border:1px solid #4A7B9D;border-radius:.75rem;padding:.7rem}.ui-next-week-compare span{color:var(--muted);font-size:.56rem}.ui-next-week-compare b{margin-top:.15rem;font-size:.7rem}
+.ui-next-period-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:.25rem;border:1px solid var(--line);border-radius:.8rem;background:var(--soft);padding:.25rem}.ui-next-period-tabs button{min-height:2.3rem;border-radius:.65rem;color:var(--muted);font-size:.68rem;font-weight:800}.ui-next-period-tabs button.active{background:#4A7B9D;color:#120D31}.ui-next-distance-chart{display:grid;height:8rem;grid-template-columns:repeat(12,minmax(0,1fr));align-items:end;gap:.28rem;border-bottom:1px solid var(--line);padding:.4rem .2rem 0}.ui-next-distance-chart>div{display:grid;height:100%;grid-template-rows:minmax(0,1fr) 1.1rem;align-items:end;justify-items:center}.ui-next-distance-chart i{display:flex;width:100%;height:100%;align-items:end;justify-content:center}.ui-next-distance-chart em{display:block;width:min(1rem,70%);min-height:2px;border-radius:.3rem .3rem 0 0;background:#4A7B9D}.ui-next-distance-chart>div:last-child em{background:#4A7B9D}.ui-next-distance-chart span{color:var(--muted);font-size:.48rem}
+.ui-next-more-intro{display:flex;align-items:center;gap:.75rem;border:1px solid var(--line);border-radius:1rem;background:var(--panel);padding:.9rem}.ui-next-more-intro>span{display:grid;width:2.5rem;height:2.5rem;place-items:center;border-radius:.75rem;background:#4A7B9D;color:#F2F4F3}.ui-next-more-intro small,.ui-next-library header small{color:#4A7B9D;font-size:.52rem;font-weight:900;letter-spacing:.09em}.dark .ui-next-more-intro small,.dark .ui-next-library header small{color:#4A7B9D}.ui-next-more-intro h2,.ui-next-library h2{font-family:var(--font-display);font-size:1rem}.ui-next-more-intro p,.ui-next-library header p{margin-top:.12rem;color:var(--muted);font-size:.62rem}.ui-next-more-menu{display:grid;margin-top:.7rem;border:1px solid var(--line);border-radius:1rem;background:var(--panel);padding:0 .8rem}.ui-next-more-menu>button{display:grid;grid-template-columns:2rem minmax(0,1fr) auto;align-items:center;gap:.55rem;border-bottom:1px solid var(--line);padding:.85rem 0;text-align:left}.ui-next-more-menu>button:last-child{border:0}.ui-next-more-menu>button>svg:first-child{color:#4A7B9D}.dark .ui-next-more-menu>button>svg:first-child{color:#F2F4F3}.ui-next-more-menu>button>div{display:grid}.ui-next-more-menu b{font-size:.72rem}.ui-next-more-menu span{color:var(--muted);font-size:.6rem}.ui-next-more-back{display:flex;align-items:center;gap:.35rem;margin-bottom:.7rem;color:#4A7B9D;font-size:.68rem;font-weight:800}.dark .ui-next-more-back{color:#F2F4F3}.ui-next-library{display:grid;gap:.75rem}.ui-next-library>div{display:grid;border:1px solid var(--line);border-radius:1rem;background:var(--panel);padding:0 .8rem}.ui-next-library article{display:flex;align-items:center;gap:.6rem;border-bottom:1px solid var(--line);padding:.75rem 0}.ui-next-library article:last-child{border:0}.ui-next-library article>span{display:grid;width:2rem;height:2rem;place-items:center;border-radius:.6rem;background:#4A7B9D;color:#F2F4F3}.ui-next-library article>div{display:grid}.ui-next-library article b{font-size:.7rem}.ui-next-library article small{color:var(--muted);font-size:.58rem}
+@media(max-width:520px){.activity-review-grid{grid-template-columns:1fr}.ui-next-today-sessions>article{grid-template-columns:1fr}.ui-next-session-done{justify-content:center}.ui-next-distance-chart{gap:.15rem}.ui-next-progress-overview .ui-next-progress-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+
+/* UI-next second-pass goal, habits, recovery and performance */
+.ui-next-goal-detail{width:min(32rem,100%)}.ui-next-goal-detail>header{display:flex;align-items:center;justify-content:space-between;gap:.75rem}.ui-next-goal-detail>header small{color:#4A7B9D;font-size:.52rem;font-weight:900;letter-spacing:.09em}.dark .ui-next-goal-detail>header small{color:#4A7B9D}.ui-next-goal-detail>header h2{font-family:var(--font-display);font-size:1.15rem}.ui-next-goal-hero{display:grid;justify-items:center;margin-top:.9rem;border-radius:.9rem;background:color-mix(in srgb,#4A7B9D 14%,var(--panel));padding:1rem;text-align:center}.ui-next-goal-hero>svg{color:#4A7B9D}.dark .ui-next-goal-hero>svg{color:#F2F4F3}.ui-next-goal-hero small{margin-top:.35rem;color:#4A7B9D;font-size:.52rem;font-weight:900;letter-spacing:.08em}.dark .ui-next-goal-hero small{color:#4A7B9D}.ui-next-goal-hero b{margin-top:.15rem;font-family:var(--font-display);font-size:1rem}.ui-next-goal-hero p{margin-top:.12rem;color:var(--muted);font-size:.62rem}.ui-next-phase-track{display:grid;grid-template-columns:repeat(4,1fr);margin-top:.8rem}.ui-next-phase-track span{display:grid;justify-items:center;gap:.25rem;color:var(--muted);font-size:.52rem}.ui-next-phase-track i{width:100%;height:.3rem;background:var(--soft)}.ui-next-phase-track span:first-child i{border-radius:999px 0 0 999px}.ui-next-phase-track span:last-child i{border-radius:0 999px 999px 0}.ui-next-phase-track span.active{color:var(--ink);font-weight:900}.ui-next-phase-track span.active i{background:#4A7B9D}.ui-next-goal-support{margin-top:.8rem;border:1px solid #4A7B9D;border-radius:.8rem;background:color-mix(in srgb,#4A7B9D 10%,var(--panel));padding:.75rem}.ui-next-goal-support b{font-size:.72rem}.ui-next-goal-support p{margin-top:.2rem;color:var(--muted);font-size:.62rem;line-height:1.5}.ui-next-goal-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:.45rem;margin-top:.65rem}.ui-next-goal-metrics>div{display:grid;border:1px solid var(--line);border-radius:.7rem;background:var(--soft);padding:.6rem}.ui-next-goal-metrics span{color:var(--muted);font-size:.52rem}.ui-next-goal-metrics b{margin-top:.15rem;font-size:.7rem}.ui-next-goal-edit{width:100%;margin-top:.7rem}
+.ui-next-next-up{display:grid;width:100%;grid-template-columns:2.2rem minmax(0,1fr) auto;align-items:center;gap:.55rem;border:1px solid var(--line);border-radius:1rem;background:color-mix(in srgb,#4A7B9D 12%,var(--panel));padding:.8rem;text-align:left}.ui-next-next-up>span{display:grid;width:2.2rem;height:2.2rem;place-items:center;border-radius:.7rem;background:#4A7B9D;color:#F2F4F3}.ui-next-next-up>div{display:grid;min-width:0}.ui-next-next-up small{color:#4A7B9D;font-size:.5rem;font-weight:900;letter-spacing:.08em}.dark .ui-next-next-up small{color:#4A7B9D}.ui-next-next-up b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.72rem}.ui-next-next-up p{margin-top:.1rem;color:var(--muted);font-size:.58rem}
+.ui-next .ui-next-habits-card{display:block}.ui-next .ui-next-habits-card>.ui-next-card-head{display:flex}.ui-next .ui-next-habits-card>.ui-next-habit-week{display:grid;grid-template-columns:1fr;gap:.35rem;margin-top:.7rem;overflow-x:auto}.ui-next-habit-days,.ui-next-habit-row{display:grid;min-width:28rem;grid-template-columns:7rem repeat(7,1fr);align-items:center;gap:.3rem}.ui-next-habit-days small{text-align:center;color:var(--muted);font-size:.5rem}.ui-next-habit-row b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.58rem}.ui-next-habit-row i{width:.9rem;height:.9rem;justify-self:center;border:1.5px solid #4A7B9D;border-radius:50%}.dark .ui-next-habit-row i{border-color:#4A7B9D}
+.recovery-note{display:grid;gap:.3rem;margin-top:.8rem;color:var(--ink);font-size:.68rem;font-weight:800}.recovery-note textarea{min-height:5rem;resize:vertical}
+.ui-next-performance-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem}.ui-next-performance-metrics article{display:flex;align-items:center;gap:.55rem;border:1px solid var(--line);border-radius:.7rem;background:var(--soft);padding:.65rem}.ui-next-performance-metrics article>svg{color:#4A7B9D}.dark .ui-next-performance-metrics article>svg{color:#F2F4F3}.ui-next-performance-metrics article>div{display:grid}.ui-next-performance-metrics b{font-size:.72rem}.ui-next-performance-metrics span{color:var(--muted);font-size:.54rem}
+@media(max-width:520px){.ui-next-goal-metrics{grid-template-columns:1fr 1fr}.ui-next-habit-days,.ui-next-habit-row{min-width:25rem;grid-template-columns:5rem repeat(7,1fr)}.ui-next-performance-metrics{grid-template-columns:1fr}}
+
+/* Keep the seven-day habit preview inside narrow phone cards. */
+.ui-next .ui-next-habits-card>.ui-next-habit-week{overflow:hidden}.ui-next-habit-days,.ui-next-habit-row{min-width:0;grid-template-columns:minmax(3.5rem,1.5fr) repeat(7,minmax(0,1fr))}@media(max-width:380px){.ui-next-habit-days,.ui-next-habit-row{min-width:0;grid-template-columns:minmax(3rem,1.35fr) repeat(7,minmax(0,1fr));gap:.18rem}.ui-next-habit-row i{width:.72rem;height:.72rem}}
+
+
+/* Full-width Progress tabs and activity-coloured stacked distance bars */
+.ui-next .history-section-tabs,.ui-next-period-tabs{width:100%;max-width:none}.ui-next .history-section-tabs>button,.ui-next-period-tabs>button{width:100%;min-width:0}
+.ui-next-distance-chart .ui-next-stacked-bar{display:flex;width:min(1rem,70%);height:100%;min-height:0;flex-direction:column-reverse;align-items:stretch;justify-content:flex-start;overflow:hidden;border-radius:.3rem .3rem 0 0;background:transparent}
+.ui-next-distance-chart .ui-next-stacked-bar em{display:block;width:100%;min-height:0;border-radius:0}
+.ui-next-distance-chart .ui-next-stacked-bar em.run{background:#4A7B9D}.ui-next-distance-chart .ui-next-stacked-bar em.bike{background:#4A7B9D}.ui-next-distance-chart .ui-next-stacked-bar em.walk{background:#DBE4EE}
+.ui-next-distance-chart>div:last-child .ui-next-stacked-bar em.run{background:#4A7B9D}.ui-next-distance-chart>div:last-child .ui-next-stacked-bar em.bike{background:#4A7B9D}.ui-next-distance-chart>div:last-child .ui-next-stacked-bar em.walk{background:#DBE4EE}
+.ui-next-progress-legend>div{display:flex;flex-wrap:wrap;gap:.65rem}.ui-next-progress-legend>div>span{display:flex;align-items:center;gap:.3rem;font-weight:800}.ui-next-progress-legend>div i{width:.62rem;height:.62rem;border-radius:.18rem}.ui-next-progress-legend i.run{background:#4A7B9D}.ui-next-progress-legend i.bike{background:#4A7B9D}.ui-next-progress-legend i.strength{background:#120D31}.ui-next-progress-legend i.walk{background:#DBE4EE}
+.ui-next .activity-type.run{background:#4A7B9D!important;color:#F2F4F3!important}.ui-next .activity-type.cycle{background:#4A7B9D!important;color:#F2F4F3!important}.ui-next .activity-type.walk{background:#DBE4EE!important;color:#F2F4F3!important}
+
+
+/* Progress space usage and unified UI-next corner system */
+.ui-next{--ui-radius-card:var(--radius-card,1rem);--ui-radius-inner:var(--radius-inner,.85rem);--ui-radius-control:var(--radius-control,.7rem)}
+.ui-next-distance-chart.week{grid-template-columns:repeat(7,minmax(0,1fr))}.ui-next-distance-chart.month{grid-template-columns:repeat(4,minmax(0,1fr))}.ui-next-distance-chart.year{grid-template-columns:repeat(12,minmax(0,1fr))}
+.ui-next-progress-overview{gap:.7rem;padding:1rem}.ui-next-progress-title{align-items:center}.ui-next-progress-title h2{font-size:1.35rem}.ui-next-progress-title>span{border:1px solid var(--line);border-radius:var(--ui-radius-control);background:var(--soft);padding:.4rem .6rem;font-weight:700}.ui-next-distance-chart{width:100%;height:7.25rem;gap:clamp(.2rem,1.2vw,.65rem);padding:.25rem .35rem 0}.ui-next-distance-chart>div{width:100%}.ui-next-distance-chart.week .ui-next-stacked-bar{width:min(1.4rem,48%)}.ui-next-distance-chart.month .ui-next-stacked-bar{width:min(2.4rem,42%)}.ui-next-distance-chart.year .ui-next-stacked-bar{width:min(1rem,58%)}.ui-next-progress-metrics{gap:.55rem}.ui-next-progress-metrics article{min-height:4.25rem;justify-content:center}.ui-next-performance-metrics article{min-height:3.65rem}.ui-next-progress-legend{border-top:1px solid var(--line);padding-top:.65rem}
+.ui-next .panel,.ui-next .today,.ui-next .day,.ui-next-weekly article,.ui-next-goal,.ui-next-today-card,.ui-next-habits-card,.ui-next-coach-shortcuts>button,.ui-next-next-up,.ui-next-progress-overview,.ui-next-more-intro,.ui-next-more-menu,.ui-next-library>div,.ui-next .activity-tracker,.ui-next .history-card,.ui-next .history-summary,.ui-next .load-panel,.ui-next .plan-explanation,.ui-next .insights-drawer,.ui-next .coach-panel,.ui-next .target-summary,.ui-next .week-head{border-radius:var(--ui-radius-card)}
+.ui-next .ui-next-summary-grid article,.ui-next-today-sessions>article,.ui-next-progress-metrics article,.ui-next-performance-metrics article,.ui-next .activity-summary>button,.ui-next .activity-records article,.ui-next .running-records article,.ui-next .settings-row,.ui-next .coach-focus,.ui-next .workout-review,.ui-next .coach-utilities>button,.ui-next .growth-grid>article,.ui-next .target-inputs label,.ui-next .distance-maths>div,.ui-next-goal-hero,.ui-next-goal-support,.ui-next-goal-metrics>div,.activity-review-grid article,.activity-next-action,.ui-next-breakdown-total,.ui-next-breakdown-list article,.ui-next-week-compare{border-radius:var(--ui-radius-inner)}
+.ui-next-period-tabs,.ui-next .history-section-tabs,.ui-next .history-filters,.ui-next .segments{border-radius:var(--ui-radius-inner)}.ui-next-period-tabs button,.ui-next .history-section-tabs button,.ui-next input,.ui-next select,.ui-next textarea,.ui-next .primary,.ui-next .secondary,.ui-next .session-action,.ui-next .edit-action{border-radius:var(--ui-radius-control)}
+.ui-next .modal{border-radius:var(--radius-panel,1.25rem)}
+@media(max-width:640px){.ui-next-progress-overview{padding:.85rem}.ui-next-distance-chart{height:6.5rem;gap:.18rem;padding-inline:.1rem}.ui-next-progress-title>span{align-self:flex-start}.ui-next .modal{border-radius:var(--radius-panel,1.25rem) var(--radius-panel,1.25rem) 0 0}}
+
+
+/* Round the real stacked bar, not the empty chart column. */
+.ui-next-distance-chart .ui-next-stacked-bar{overflow:visible;border-radius:0;background:transparent}
+.ui-next-distance-chart .ui-next-stacked-bar>span{display:flex;width:100%;min-height:0;flex-direction:column-reverse;overflow:visible;border-radius:0}
+.ui-next-distance-chart .ui-next-stacked-bar>span>.ui-next-bar-segment{display:block;width:100%;min-height:2px;border:0;border-radius:0;padding:0;cursor:pointer}
+.ui-next-distance-chart .ui-next-bar-segment.run{background:#4A7B9D}.ui-next-distance-chart .ui-next-bar-segment.bike{background:#4A7B9D}.ui-next-distance-chart .ui-next-bar-segment.strength{background:#120D31}.ui-next-distance-chart .ui-next-bar-segment.walking{background:#DBE4EE}.ui-next-distance-chart .ui-next-bar-segment:last-child{border-radius:.4rem .4rem 0 0}
+.ui-next-distance-chart .ui-next-bar-segment:hover{filter:brightness(1.12)}.ui-next-distance-chart .ui-next-bar-segment:focus-visible{position:relative;z-index:1;outline:2px solid var(--ink);outline-offset:-2px}
+.ui-next-chart-readout{display:flex;min-height:2.25rem;align-items:center;justify-content:space-between;gap:.75rem;border:1px solid var(--line);border-radius:var(--ui-radius-control);background:var(--soft);padding:.4rem .65rem;color:var(--muted);font-size:.72rem}.ui-next-chart-readout b{color:var(--ink);font-size:.74rem}.ui-next-chart-readout span{text-align:right}
+/* Keep selected activity summaries legible on coral in both themes. */
+.ui-next .activity-summary>button.active svg,.ui-next .activity-summary>button.active span,.ui-next .activity-summary>button.active small,.ui-next .activity-summary>button.active strong{color:#120D31!important;opacity:1}.ui-next .activity-summary>button.active b,.ui-next .activity-summary>button.active strong{font-weight:900}.ui-next .activity-summary>button.active small{font-weight:700}
+/* Habit Tracker uses the same compact card system as the rest of UI-next. */
+.ui-next .habit-tracker-page{display:grid;gap:.75rem}
+.ui-next .habit-page-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:.75rem;margin:0;border:1px solid var(--line);border-radius:var(--ui-radius-card);background:var(--panel);padding:.85rem}
+.ui-next .habit-page-head .eyebrow,.ui-next .habit-page-head h1{display:none}
+.ui-next .habit-page-head>div:first-child p:last-child{margin:0;color:var(--muted);font-size:.68rem;line-height:1.45}
+.ui-next .habit-month-nav{display:grid;grid-template-columns:2.35rem minmax(7.5rem,1fr) 2.35rem;gap:.35rem}
+.ui-next .habit-month-nav .icon-btn{width:2.35rem;height:2.35rem;border-radius:var(--ui-radius-control)}
+.ui-next .habit-month-nav>div{display:grid;min-width:0;place-items:center;border:1px solid var(--line);border-radius:var(--ui-radius-control);background:var(--soft);padding:.45rem .6rem;color:var(--ink);font-size:.72rem;white-space:nowrap}
+.ui-next .habit-orbit,.ui-next .habit-calendar-wrap,.ui-next .habit-add-panel{margin:0;border-color:var(--line);background:var(--panel);box-shadow:none}
+.ui-next .habit-calendar-wrap{padding:.85rem}
+.ui-next .habit-legend{gap:.4rem;margin-bottom:.7rem}
+.ui-next .habit-legend-item{min-width:0;border-radius:var(--ui-radius-control);background:var(--soft);padding:.35rem .45rem;color:var(--ink)}
+.ui-next .habit-legend-item b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ui-next .habit-legend-item button{width:1.65rem;height:1.65rem;border-radius:.5rem;color:var(--muted)}
+.ui-next .habit-weekdays,.ui-next .habit-calendar{width:100%;gap:.3rem}
+.ui-next .habit-weekdays span{padding:.3rem 0;color:var(--muted);font-size:.56rem}
+.ui-next .habit-day{min-width:0;min-height:4.25rem;aspect-ratio:auto;border-color:var(--line);border-radius:var(--ui-radius-control);background:var(--soft);padding:.35rem}
+.ui-next .habit-day.outside{background:color-mix(in srgb,var(--soft) 70%,var(--bg));opacity:.48}
+.ui-next .habit-day.today-date{border-color:#4A7B9D;box-shadow:inset 0 0 0 1px #4A7B9D}
+.ui-next .habit-day.today-date .habit-date{color:#4A7B9D}.dark .ui-next .habit-day.today-date .habit-date{color:#4A7B9D}
+.ui-next .habit-dots{gap:.22rem;margin-top:.35rem}
+.ui-next .habit-dot{width:1rem;height:1rem;border-width:1.5px;border-radius:50%}
+.ui-next .habit-dot svg,.ui-next .habit-sheet-dot svg{display:none}
+.ui-next .habit-add-panel{padding:.9rem}
+.ui-next .habit-add-panel .section-title{font-size:1rem}
+.ui-next .habit-add-fields{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:end;gap:.75rem;margin-top:.75rem}
+.ui-next .habit-add-fields label{min-width:0}
+.ui-next .habit-add-fields .auth-input{width:100%}
+.ui-next .habit-add-fields fieldset{min-width:0}
+.ui-next .habit-add-fields .color-choice{width:2rem;height:2rem}
+.ui-next .habit-add-fields>.primary{min-height:2.35rem;white-space:nowrap}
+@media(max-width:560px){
+ .ui-next .habit-page-head{grid-template-columns:1fr;padding:.75rem}
+ .ui-next .habit-page-head>div:first-child p:last-child{font-size:.65rem}
+ .ui-next .habit-month-nav{width:100%;grid-template-columns:2.35rem minmax(0,1fr) 2.35rem}
+ .ui-next .habit-orbit{margin:0;padding:.75rem}
+ .ui-next .habit-calendar-wrap{margin:0;padding:.65rem}
+ .ui-next .habit-legend{flex-wrap:nowrap;overflow-x:auto;padding-bottom:.15rem;scrollbar-width:none}
+ .ui-next .habit-legend::-webkit-scrollbar{display:none}
+ .ui-next .habit-legend-item{flex:none;max-width:11rem}
+ .ui-next .habit-weekdays,.ui-next .habit-calendar{gap:3px}
+ .ui-next .habit-day{min-height:3.55rem;border-radius:.5rem;padding:3px}
+ .ui-next .habit-date{font-size:.56rem}
+ .ui-next .habit-dots{gap:2px;margin-top:4px}
+ .ui-next .habit-dot{width:12px;height:12px}
+ .ui-next .habit-add-fields{grid-template-columns:1fr}
+ .ui-next .habit-add-fields fieldset,.ui-next .habit-add-fields>.primary{width:100%}
+ .ui-next .habit-add-fields>.primary{justify-content:center}
+}
+@media(max-width:360px){.ui-next .habit-day{min-height:3.25rem}.ui-next .habit-calendar-wrap{padding:.5rem}.ui-next .habit-weekdays,.ui-next .habit-calendar{gap:2px}}
+/* Light mode keeps coral as an accent; primary CTAs use quieter Ink Black. */
+.ui-next .primary{border-color:#120D31;background:#120D31;color:#F2F4F3}
+.ui-next .primary:hover:not(:disabled){border-color:#4A7B9D;background:#4A7B9D}
+.dark .ui-next .primary{border-color:#4A7B9D;background:#4A7B9D;color:#120D31}
+.dark .ui-next .primary:hover:not(:disabled){border-color:#4A7B9D;background:#4A7B9D}
+/* Unified blue action system. */
+.ui-next .primary,.dark .ui-next .primary{display:inline-flex;min-height:2.5rem;align-items:center;justify-content:center;gap:.35rem;border-color:#4A7B9D;background:#4A7B9D;color:#F2F4F3;font-weight:800;box-shadow:none}
+.ui-next .primary:hover:not(:disabled),.dark .ui-next .primary:hover:not(:disabled){border-color:#4A7B9D;background:#4A7B9D;color:#F2F4F3}
+.ui-next .primary:disabled{opacity:.52}
+.ui-next .history-section-tabs button.active,.ui-next .history-filters button.active,.ui-next .activity-summary>button.active,.ui-next-period-tabs button.active,.ui-next .wfh-day.selected,.ui-next #full-schedule .today-label,.ui-next #full-schedule .complete-action.done,.ui-next .check.done,.ui-next .mini-check.done,.ui-next-session-done.completed{color:#F2F4F3}
+.ui-next .activity-summary>button.active svg,.ui-next .activity-summary>button.active span,.ui-next .activity-summary>button.active small,.ui-next .activity-summary>button.active strong{color:#F2F4F3!important}
+.ui-next-goal>span{color:#F2F4F3}
+/* Compact connected weekly summary. */
+.ui-next .ui-next-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;overflow:hidden;border:1px solid var(--line);border-radius:var(--ui-radius-card);background:var(--panel);padding:.55rem}
+.ui-next .ui-next-summary-grid article{display:grid;min-width:0;min-height:5rem;grid-template-columns:1fr;justify-items:center;align-content:center;gap:.22rem;border:0;border-left:1px solid var(--line);border-radius:0;background:transparent;padding:.35rem .5rem;text-align:center}
+.ui-next .ui-next-summary-grid article:first-child{border-left:0}
+.ui-next .ui-next-summary-grid article>span{display:grid;width:2rem;height:2rem;grid-row:auto;place-items:center;border-radius:.65rem;background:color-mix(in srgb,#4A7B9D 88%,var(--panel));color:#F2F4F3}
+.ui-next .ui-next-summary-grid small{overflow:hidden;max-width:100%;color:var(--muted);font-size:.52rem;font-weight:900;letter-spacing:.07em;line-height:1.15;white-space:nowrap}
+.ui-next .ui-next-summary-grid strong{font-family:var(--font-display);font-size:.9rem;font-weight:850;line-height:1.15;white-space:nowrap}
+@media(max-width:420px){.ui-next .ui-next-summary-grid{padding:.4rem}.ui-next .ui-next-summary-grid article{min-height:4.6rem;padding:.25rem}.ui-next .ui-next-summary-grid article>span{width:1.8rem;height:1.8rem}.ui-next .ui-next-summary-grid small{font-size:.46rem;letter-spacing:.04em}.ui-next .ui-next-summary-grid strong{font-size:.75rem}}
+/* Imperial / Crimson / Ocean / Sky palette. */
+.ui-next{--bg:#F2F4F3;--panel:#F2F4F3;--ink:#120D31;--muted:color-mix(in srgb,#120D31 68%,#F2F4F3);--line:color-mix(in srgb,#4A7B9D 24%,#F2F4F3);--soft:color-mix(in srgb,#4A7B9D 8%,#F2F4F3);--today-bg:#F2F4F3;--today-ink:#120D31;--today-muted:color-mix(in srgb,#120D31 68%,#F2F4F3);--today-border:color-mix(in srgb,#4A7B9D 28%,#F2F4F3);--today-card:color-mix(in srgb,#4A7B9D 9%,#F2F4F3);--today-field:#F2F4F3;--sport-run:#7B61A8;--sport-cycle:#4A7B9D;--sport-strength:#120D31;--sport-rest:#DBE4EE;--state-complete:#4A7B9D;--state-complete-ink:#F2F4F3;--state-warning:#749C75;--state-danger:#749C75}
+.dark .ui-next{--bg:#120D31;--panel:color-mix(in srgb,#120D31 78%,#4A7B9D);--ink:#F2F4F3;--muted:color-mix(in srgb,#F2F4F3 74%,#4A7B9D);--line:color-mix(in srgb,#4A7B9D 72%,#F2F4F3);--soft:color-mix(in srgb,#120D31 64%,#4A7B9D);--today-bg:color-mix(in srgb,#120D31 78%,#4A7B9D);--today-ink:#F2F4F3;--today-muted:color-mix(in srgb,#F2F4F3 74%,#4A7B9D);--today-border:#4A7B9D;--today-card:color-mix(in srgb,#120D31 58%,#4A7B9D);--today-field:#120D31}
+.ui-next-app-top{background:#F2F4F3;color:#120D31}.dark .ui-next-app-top{background:#120D31;color:#F2F4F3}
+.ui-next-bottom-nav,.dark .ui-next-bottom-nav{border-top-color:#4A7B9D;background:#120D31;box-shadow:0 -6px 18px #120D3133}
+.ui-next-bottom-nav button{color:color-mix(in srgb,#F2F4F3 72%,#4A7B9D)}.ui-next-bottom-nav button.active{color:#DBE4EE}.ui-next-bottom-nav button.active:after{background:#DBE4EE}
+.ui-next .primary,.dark .ui-next .primary{border-color:#749C75;background:#749C75;color:#F2F4F3}.ui-next .primary:hover:not(:disabled),.dark .ui-next .primary:hover:not(:disabled){border-color:#DBE4EE;background:#DBE4EE;color:#120D31}
+.ui-next .secondary{border-color:#4A7B9D;background:#F2F4F3;color:#4A7B9D}.ui-next .secondary:hover:not(:disabled){border-color:#DBE4EE;color:#120D31}.dark .ui-next .secondary{border-color:#4A7B9D;background:color-mix(in srgb,#120D31 72%,#4A7B9D);color:#F2F4F3}.dark .ui-next .secondary:hover:not(:disabled){border-color:#DBE4EE;color:#DBE4EE}
+.ui-next button:focus-visible,.ui-next input:focus-visible,.ui-next select:focus-visible,.ui-next textarea:focus-visible,.ui-next a:focus-visible{outline-color:#DBE4EE}
+.ui-next a,.ui-next-card-head button,.ui-next-summary-head button{color:#4A7B9D}.ui-next a:hover,.ui-next-card-head button:hover,.ui-next-summary-head button:hover{color:#DBE4EE}
+.ui-next .history-section-tabs button.active,.ui-next .history-filters button.active,.ui-next .activity-summary>button.active,.ui-next-period-tabs button.active,.ui-next .wfh-day.selected{border-color:#4A7B9D;background:#4A7B9D;color:#F2F4F3}
+.ui-next .history-section-tabs button:hover,.ui-next .history-filters button:hover,.ui-next-period-tabs button:hover{color:#DBE4EE}
+.ui-next #full-schedule .today-label,.ui-next #full-schedule .complete-action.done,.ui-next .check.done,.ui-next .mini-check.done,.ui-next-session-done.completed{border-color:#4A7B9D;background:#4A7B9D;color:#F2F4F3}
+.ui-next-goal>span{background:#749C75;color:#F2F4F3}.ui-next-phase-track span.active i{background:#749C75}
+.ui-next .day.is-today,.ui-next .habit-day.today-date{border-color:#DBE4EE;box-shadow:inset 0 0 0 1px #DBE4EE}.ui-next .habit-day.today-date .habit-date,.dark .ui-next .habit-day.today-date .habit-date{color:#DBE4EE}
+.ui-next-distance-chart .ui-next-bar-segment.run,.ui-next-progress-legend i.run,.ui-next .activity-type.run{background:#749C75!important}.ui-next-distance-chart .ui-next-bar-segment.bike,.ui-next-progress-legend i.bike,.ui-next .activity-type.cycle{background:#4A7B9D!important}.ui-next-distance-chart .ui-next-bar-segment.strength,.ui-next-progress-legend i.strength{background:#120D31!important;box-shadow:inset 0 0 0 1px #F2F4F366}.ui-next-distance-chart .ui-next-bar-segment.walking,.ui-next-progress-legend i.walk,.ui-next .activity-type.walk{background:#DBE4EE!important}
+.ui-next-progress-bars em,.ui-next .week-progress-bar span{background:#DBE4EE}
+.ui-next .confirmation-danger,.ui-next .danger{border-color:#749C75;background:#749C75;color:#F2F4F3}
+.ui-next .habit-dot,.ui-next .habit-sheet-dot,.ui-next .today-habit>span{border-color:color-mix(in srgb,#4A7B9D 35%,#F2F4F3)!important}.dark .ui-next .habit-dot,.dark .ui-next .habit-sheet-dot,.dark .ui-next .today-habit>span{border-color:color-mix(in srgb,#4A7B9D 72%,#F2F4F3)!important}
+/* Dark mode: deep violet base with blue elevation and clear white type. */
+.dark .ui-next{--bg:#120D31;--panel:color-mix(in srgb,#120D31 86%,#4A7B9D);--ink:#F2F4F3;--muted:color-mix(in srgb,#F2F4F3 74%,#4A7B9D);--line:color-mix(in srgb,#4A7B9D 58%,#120D31);--soft:color-mix(in srgb,#120D31 74%,#4A7B9D);--today-bg:color-mix(in srgb,#120D31 84%,#4A7B9D);--today-ink:#F2F4F3;--today-muted:color-mix(in srgb,#F2F4F3 74%,#4A7B9D);--today-border:#4A7B9D;--today-card:color-mix(in srgb,#120D31 68%,#4A7B9D);--today-field:#120D31;--today-shadow:#120D31CC}
+.dark .ui-next-app-top,.dark .ui-next-bottom-nav{background:#120D31}
+.dark .ui-next-bottom-nav{border-top-color:color-mix(in srgb,#4A7B9D 72%,#120D31);box-shadow:0 -6px 20px #120D31CC}
+.dark .ui-next .modal-bg{background:#120D31CC}
+.dark .ui-next .modal,.dark .ui-next .session-menu-panel,.dark .ui-next .habit-day-sheet{background:var(--panel)!important}
+.dark .ui-next input,.dark .ui-next select,.dark .ui-next textarea{border-color:var(--line);background:#120D31;color:#F2F4F3}
+.dark .ui-next input::placeholder,.dark .ui-next textarea::placeholder{color:var(--muted)}
+.dark .ui-next .activity-tag,.dark .ui-next #full-schedule .activity-tag{color:#F2F4F3}
+/* Neutral-first semantic palette: colour communicates role, not decoration. */
+.ui-next{
+  --bg:#F2F4F3;
+  --panel:#FFFFFF;
+  --surface-tint:#DBE4EE;
+  --ink:#120D31;
+  --muted:#4F5670;
+  --line:#C4CFDA;
+  --soft:color-mix(in srgb,#DBE4EE 58%,#FFFFFF);
+  --action-primary:#315F7E;
+  --action-primary-ink:#F2F4F3;
+  --action-primary-hover:#254A64;
+  --selected:#315F7E;
+  --selected-ink:#F2F4F3;
+  --focus:#315F7E;
+  --link:#315F7E;
+  --danger:#B4233C;
+  --danger-ink:#FFFFFF;
+  --sport-run:#7B61A8;
+  --sport-cycle:#315F7E;
+  --sport-strength:#120D31;
+  --sport-walk:#596F83;
+  --sport-rest:#DBE4EE;
+  --state-complete:#315F7E;
+  --state-complete-ink:#F2F4F3;
+  --state-warning:#9A6A16;
+  --state-danger:#B4233C;
+  --today-bg:#FFFFFF;
+  --today-ink:#120D31;
+  --today-muted:#4F5670;
+  --today-border:#315F7E;
+  --today-card:#F2F4F3;
+  --today-field:#F2F4F3;
+  --today-shadow:#120D311A;
+}
+.dark .ui-next{
+  --bg:#120D31;
+  --panel:#1B1742;
+  --surface-tint:#25204C;
+  --ink:#F2F4F3;
+  --muted:#C4C8D8;
+  --line:#4F5278;
+  --soft:#25204C;
+  --action-primary:#315F7E;
+  --action-primary-ink:#F2F4F3;
+  --action-primary-hover:#254A64;
+  --selected:#9AC4DF;
+  --selected-ink:#120D31;
+  --focus:#9AC4DF;
+  --link:#9AC4DF;
+  --danger:#E87888;
+  --danger-ink:#120D31;
+  --sport-run:#B49DDD;
+  --sport-cycle:#9AC4DF;
+  --sport-strength:#DBE4EE;
+  --sport-walk:#AAB9C8;
+  --sport-rest:#4F5278;
+  --state-complete:#9AC4DF;
+  --state-complete-ink:#120D31;
+  --state-warning:#E5BD68;
+  --state-danger:#E87888;
+  --today-bg:#1B1742;
+  --today-ink:#F2F4F3;
+  --today-muted:#C4C8D8;
+  --today-border:#9AC4DF;
+  --today-card:#25204C;
+  --today-field:#120D31;
+  --today-shadow:#120D31CC;
+}
+.ui-next-app-top{background:var(--bg);color:var(--ink)}
+.ui-next-bottom-nav{border-top-color:var(--line);background:var(--panel);box-shadow:0 -6px 20px #120D311F}
+.ui-next-bottom-nav button{color:var(--muted)}
+.ui-next-bottom-nav button.active{color:var(--action-primary)}
+.ui-next-bottom-nav button.active:after{background:var(--action-primary)}
+.ui-next .primary,.dark .ui-next .primary{border-color:var(--action-primary);background:var(--action-primary);color:var(--action-primary-ink)}
+.ui-next .dot{background:var(--selected)}
+.ui-next .data-health.healthy{border-color:color-mix(in srgb,var(--selected) 38%,var(--line));background:color-mix(in srgb,var(--selected) 6%,var(--panel))}
+.ui-next .primary:hover:not(:disabled),.dark .ui-next .primary:hover:not(:disabled){border-color:var(--action-primary-hover);background:var(--action-primary-hover);color:var(--action-primary-ink)}
+.ui-next .secondary{border-color:var(--selected);background:var(--panel);color:var(--selected)}
+.ui-next .secondary:hover:not(:disabled){border-color:var(--action-primary);color:var(--ink)}
+.dark .ui-next .secondary{border-color:var(--selected);background:var(--surface-tint);color:var(--ink)}
+.dark .ui-next .secondary:hover:not(:disabled){border-color:var(--action-primary);color:var(--action-primary)}
+.ui-next button:focus-visible,.ui-next input:focus-visible,.ui-next select:focus-visible,.ui-next textarea:focus-visible,.ui-next a:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.ui-next a,.ui-next-card-head button,.ui-next-summary-head button{color:var(--link)}
+.ui-next a:hover,.ui-next-card-head button:hover,.ui-next-summary-head button:hover{color:var(--ink)}
+.ui-next .history-section-tabs button.active,.ui-next .history-filters button.active,.ui-next .activity-summary>button.active,.ui-next-period-tabs button.active,.ui-next .wfh-day.selected{border-color:var(--selected);background:var(--selected);color:var(--selected-ink)}
+.ui-next .history-section-tabs button:hover,.ui-next .history-filters button:hover,.ui-next-period-tabs button:hover{color:var(--ink)}
+.ui-next #full-schedule .today-label,.ui-next #full-schedule .complete-action.done,.ui-next .check.done,.ui-next .mini-check.done,.ui-next-session-done.completed{border-color:var(--state-complete);background:var(--state-complete);color:var(--state-complete-ink)}
+.ui-next-goal>span{background:var(--action-primary);color:var(--action-primary-ink)}
+.ui-next-phase-track span.active i{background:var(--action-primary)}
+.ui-next .day.is-today,.ui-next .habit-day.today-date{border-color:var(--selected);box-shadow:inset 0 0 0 1px var(--selected)}
+.ui-next .habit-day.today-date .habit-date,.dark .ui-next .habit-day.today-date .habit-date{color:var(--selected)}
+.ui-next-distance-chart .ui-next-bar-segment.run,.ui-next-progress-legend i.run,.ui-next .activity-type.run{background:var(--sport-run)!important}
+.ui-next .activity-type.run{color:#F2F4F3!important}
+.ui-next-distance-chart .ui-next-bar-segment.bike,.ui-next-progress-legend i.bike,.ui-next .activity-type.cycle{background:var(--sport-cycle)!important}
+.ui-next .activity-type.cycle{color:var(--selected-ink)!important}
+.ui-next-distance-chart .ui-next-bar-segment.strength,.ui-next-progress-legend i.strength{background:var(--sport-strength)!important;box-shadow:inset 0 0 0 1px #F2F4F366}
+.ui-next-distance-chart .ui-next-bar-segment.walking,.ui-next-progress-legend i.walk,.ui-next .activity-type.walk{background:var(--sport-walk)!important}
+.ui-next .activity-type.walk{color:#F2F4F3!important}
+.dark .ui-next .activity-type.run{color:#120D31!important}.dark .ui-next .activity-type.cycle,.dark .ui-next .activity-type.walk{color:#120D31!important}
+.ui-next-progress-bars em,.ui-next .week-progress-bar span{background:var(--action-primary)}
+.ui-next .confirmation-danger,.ui-next .danger{border-color:var(--danger);background:var(--danger);color:var(--danger-ink)}
+.ui-next .habit-dot,.ui-next .habit-sheet-dot,.ui-next .today-habit>span{border-color:var(--line)!important}
+.dark .ui-next-app-top,.dark .ui-next-bottom-nav{background:var(--bg)}
+.dark .ui-next-bottom-nav{border-top-color:var(--line);box-shadow:0 -6px 20px #120D31CC}
+.dark .ui-next .modal-bg{background:#120D31CC}
+.dark .ui-next .modal,.dark .ui-next .session-menu-panel,.dark .ui-next .habit-day-sheet{background:var(--panel)!important}
+.dark .ui-next input,.dark .ui-next select,.dark .ui-next textarea{border-color:var(--line);background:var(--today-field);color:var(--ink)}
+.dark .ui-next input::placeholder,.dark .ui-next textarea::placeholder{color:var(--muted)}
+.dark .ui-next .activity-tag,.dark .ui-next #full-schedule .activity-tag{color:var(--ink)}
+/* Native app type scale: one system family, with size and weight providing hierarchy. */
+.ui-next{font-family:var(--font-body);font-size:16px;line-height:1.5}
+.ui-next button,.ui-next input,.ui-next select,.ui-next textarea{font-family:inherit}
+.ui-next h1,.ui-next h2,.ui-next h3,.ui-next .section-title,.ui-next .font-display,.ui-next strong,.ui-next b{font-family:inherit}
+.ui-next h1{font-size:clamp(2rem,5vw,2.35rem);font-weight:750;line-height:1.1;letter-spacing:-.03em}
+.ui-next h2,.ui-next .section-title{font-size:clamp(1.35rem,3.5vw,1.55rem);font-weight:700;line-height:1.2;letter-spacing:-.02em}
+.ui-next h3{font-size:1.125rem;font-weight:700;line-height:1.3}
+.ui-next p{font-size:.9375rem;line-height:1.55}
+.ui-next small{font-size:.75rem!important;line-height:1.4}
+.ui-next button,.ui-next label,.ui-next input,.ui-next select,.ui-next textarea{font-size:.875rem;line-height:1.4}
+.ui-next .eyebrow{font-size:.75rem;line-height:1.25;letter-spacing:.12em}
+.ui-next .ui-next-app-top h1{font-size:clamp(2rem,5vw,2.25rem)}
+.ui-next .ui-next-bottom-nav button{font-size:.75rem}
+.ui-next .ui-next-summary-grid small{font-size:.75rem!important;white-space:normal}
+.ui-next .ui-next-summary-grid strong{font-size:1.125rem;font-weight:700}
+.ui-next .ui-next-card-head h2,.ui-next-progress-title h2,.ui-next-more-intro h2,.ui-next-library h2{font-size:1.35rem}
+.ui-next .ui-next-card-head button,.ui-next-summary-head button,.ui-next-more-back{font-size:.8125rem}
+.ui-next-today-sessions b,.ui-next-more-menu b,.ui-next-library article b,.ui-next-breakdown-list b,.ui-next-performance-metrics b{font-size:.875rem}
+.ui-next-today-sessions p,.ui-next-more-menu span,.ui-next-library article small,.ui-next-breakdown-list span,.ui-next-performance-metrics span{font-size:.75rem}
+.ui-next-progress-overview{gap:1rem;padding:1rem}
+.ui-next-progress-title{align-items:center}
+.ui-next-progress-title small{font-size:.75rem!important}
+.ui-next-progress-title h2{margin-top:.2rem}
+.ui-next-progress-title>span{border:1px solid var(--line);border-radius:999px;background:var(--soft);padding:.45rem .7rem;font-size:.75rem}
+.ui-next-progress-metrics{grid-template-columns:repeat(5,minmax(0,1fr));gap:.65rem}
+.ui-next-progress-metrics article{position:relative;min-height:6.5rem;align-content:space-between;overflow:hidden;border:1px solid var(--line);border-radius:var(--ui-radius-inner);background:var(--soft);padding:1rem;text-align:left}
+.ui-next-progress-metrics article:before{position:absolute;top:0;right:0;left:0;height:4px;background:var(--selected);content:""}
+.ui-next-progress-metrics article.run:before{background:var(--sport-run)}
+.ui-next-progress-metrics article.cycle:before{background:var(--sport-cycle)}
+.ui-next-progress-metrics article.strength:before{background:var(--sport-strength)}
+.ui-next-progress-metrics article.completion:before{background:var(--action-primary)}
+.ui-next-progress-metrics article span{order:0;margin:0;color:var(--muted);font-size:.8125rem;font-weight:600;line-height:1.3}
+.ui-next-progress-metrics article b{order:1;margin-top:.55rem;color:var(--ink);font-size:clamp(1.35rem,3vw,1.65rem);font-weight:750;line-height:1.1;letter-spacing:-.025em;white-space:nowrap}
+.ui-next-performance-metrics{gap:.65rem}
+.ui-next-performance-metrics article{min-height:4.25rem;padding:.8rem}
+.ui-next-progress-note{margin:0;border-top:1px solid var(--line);padding-top:.75rem;color:var(--muted);font-size:.75rem!important}
+@media(max-width:700px){
+  .ui-next-progress-title{align-items:flex-start;flex-direction:column}
+  .ui-next-progress-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ui-next-progress-metrics article{min-height:5.75rem;padding:.85rem}
+  .ui-next-progress-metrics article:last-child{grid-column:1/-1}
+}
+@media(max-width:420px){
+  .ui-next{font-size:16px}
+  .ui-next-progress-metrics article b{font-size:1.35rem}
+}
+/* Compact progress summary: clearer hierarchy with less unused vertical space. */
+.ui-next-progress-overview{gap:.8rem;padding:1rem}
+.ui-next-progress-title{align-items:flex-end;flex-direction:row;flex-wrap:wrap;gap:.5rem 1rem}
+.ui-next-progress-title>div{min-width:0;flex:1}
+.ui-next-progress-title small{color:var(--link);letter-spacing:.1em}
+.ui-next-progress-title h2{margin-top:.15rem;font-size:1.4rem}
+.ui-next-progress-title>span{align-self:center;border-color:var(--line);background:transparent;padding:.3rem .6rem;color:var(--muted);font-size:.75rem;font-weight:600;white-space:nowrap}
+.ui-next-progress-metrics{gap:.5rem}
+.ui-next-progress-metrics article{min-height:5rem;align-content:center;justify-content:stretch;justify-items:start;gap:.35rem;border-color:var(--line);background:var(--soft);padding:.8rem .85rem .75rem 1rem;box-shadow:0 2px 8px #120D310A}
+.ui-next-progress-metrics article:before{top:0;right:auto;bottom:0;left:0;width:4px;height:auto}
+.ui-next-progress-metrics article span{font-size:.75rem;font-weight:650}
+.ui-next-progress-metrics article b{margin:0;font-size:1.4rem;font-weight:750}
+.ui-next-progress-metrics article.completion{grid-template-columns:minmax(0,1fr) auto;align-content:center;align-items:center;column-gap:1rem}
+.ui-next-progress-metrics article.completion b{justify-self:end}
+.ui-next-performance-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}
+.ui-next-performance-metrics article{min-height:3.75rem;gap:.65rem;background:var(--panel);padding:.7rem .8rem;box-shadow:none}
+.ui-next-performance-metrics article>svg{width:1.15rem;height:1.15rem;flex:none}
+.ui-next-performance-metrics article b{font-size:.95rem}
+.ui-next-performance-metrics article span{margin-top:.05rem;font-size:.7rem}
+.ui-next-progress-note{padding-top:.65rem;font-size:.7rem!important}
+@media(max-width:700px){
+  .ui-next-progress-overview{gap:.7rem;padding:.8rem}
+  .ui-next-progress-title{align-items:flex-end;flex-direction:row}
+  .ui-next-progress-title>span{align-self:center;margin:0}
+  .ui-next-progress-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}
+  .ui-next-progress-metrics article{min-height:4.75rem;padding:.7rem .75rem .65rem .9rem}
+  .ui-next-progress-metrics article:last-child{grid-column:1/-1;min-height:4rem}
+  .ui-next-progress-metrics article b{font-size:1.3rem}
+  .ui-next-performance-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:430px){
+  .ui-next-progress-title{align-items:flex-start}
+  .ui-next-progress-title>span{align-self:flex-start}
+  .ui-next-performance-metrics{grid-template-columns:1fr}
+}
+/* Adaptive coach: one cohesive card with a consistent internal spacing rhythm. */
+.ui-next .coach-panel{overflow:hidden;padding:0}
+.ui-next .coach-v2-head{align-items:center;margin:0;padding:1rem}
+.ui-next .coach-v2-brand{gap:.75rem}
+.ui-next .coach-v2-brand>span{width:2.5rem;height:2.5rem;border-radius:.8rem}
+.ui-next .coach-v2-brand .eyebrow{font-size:.7rem;letter-spacing:.11em}
+.ui-next .coach-v2-brand h2{margin-top:.15rem;font-size:1.3rem;line-height:1.15}
+.ui-next .coach-v2-state{max-width:none;border:1px solid var(--line);background:var(--soft);padding:.35rem .6rem;color:var(--ink);font-size:.7rem;line-height:1.2;text-align:center;white-space:nowrap}
+.ui-next .coach-v2-state.ready{background:var(--soft);color:var(--selected)}
+.ui-next .coach-steady{align-items:center;gap:.7rem;margin:0;border:0;border-top:1px solid var(--line);border-radius:0;background:transparent;padding:.85rem 1rem}
+.ui-next .coach-steady>span{width:2rem;height:2rem;border-radius:.65rem;background:color-mix(in srgb,var(--selected) 12%,var(--panel));color:var(--selected)}
+.ui-next .coach-steady b{font-size:.875rem}
+.ui-next .coach-steady p{margin-top:.12rem;font-size:.8125rem;line-height:1.45}
+.ui-next .coach-tools{margin:0;border-top:1px solid var(--line);padding:0}
+.ui-next .coach-tools>summary{min-height:2.9rem;background:transparent;padding:.75rem 1rem;color:var(--muted);font-size:.78rem}
+.ui-next .coach-tools>summary:hover{background:var(--soft);color:var(--ink)}
+.ui-next .coach-tools .coach-utilities{margin:0;border-top:1px solid var(--line);padding:.75rem 1rem}
+.ui-next .coach-utilities{background:transparent}
+.ui-next .coach-utilities>button{min-height:3.5rem;padding:.7rem}
+.ui-next .coach-utilities b{font-size:.8rem}
+.ui-next .coach-utilities small{font-size:.72rem}
+.ui-next .coach-v2 .workout-review{margin:.8rem 1rem 1rem;border:1px solid var(--line);border-left:3px solid var(--selected);border-radius:var(--ui-radius-inner);background:var(--soft);padding:.85rem;box-shadow:none}
+.ui-next .coach-v2 .workout-review.on-track,.ui-next .coach-v2 .workout-review.progress,.ui-next .coach-v2 .workout-review.watch,.ui-next .coach-v2 .workout-review.limited{box-shadow:none}
+.ui-next .workout-review-top{grid-template-columns:2.25rem minmax(0,1fr) auto;align-items:start;gap:.7rem}
+.ui-next .workout-review-icon{width:2.25rem;height:2.25rem}
+.ui-next .workout-review-top .eyebrow{font-size:.68rem;letter-spacing:.09em;line-height:1.35}
+.ui-next .workout-review-top h3{margin-top:.15rem;font-size:1.05rem;line-height:1.3}
+.ui-next .workout-review-top>div>small{margin-top:.12rem;font-size:.78rem}
+.ui-next .workout-review .insight-confidence{padding:.28rem .5rem;font-size:.65rem}
+.ui-next .workout-review-metrics{gap:.35rem;margin-top:.75rem}
+.ui-next .workout-review-metrics span{background:var(--panel);padding:.3rem .5rem;font-size:.7rem;font-weight:700}
+.ui-next .workout-review-action{gap:.2rem;margin-top:.75rem;border:1px solid var(--line);border-radius:var(--ui-radius-control);background:var(--panel);padding:.65rem .7rem}
+.ui-next .workout-review-action span,.ui-next .workout-review-detail span{font-size:.65rem;letter-spacing:.1em}
+.ui-next .workout-review-action b{font-size:.8rem;line-height:1.45}
+.ui-next .workout-review-toggle{min-height:2.5rem;margin-top:.4rem;border-top:1px solid var(--line);padding:.65rem 0 0;font-size:.78rem}
+.ui-next .workout-review-detail{gap:.65rem;margin-top:.2rem;padding-top:.7rem}
+.ui-next .workout-review-detail p{font-size:.78rem;line-height:1.5}
+.ui-next .workout-review-detail>small{font-size:.7rem!important}
+@media(max-width:520px){
+  .ui-next .coach-v2-head{align-items:flex-start;padding:.85rem}
+  .ui-next .coach-v2-brand{align-items:flex-start}
+  .ui-next .coach-v2-brand>span{width:2.3rem;height:2.3rem}
+  .ui-next .coach-v2-brand h2{font-size:1.2rem}
+  .ui-next .coach-v2-state{max-width:7.5rem;font-size:.65rem;white-space:normal}
+  .ui-next .coach-steady{align-items:flex-start;padding:.8rem .85rem}
+  .ui-next .coach-tools>summary{padding-right:.85rem;padding-left:.85rem}
+  .ui-next .coach-tools .coach-utilities{padding:.7rem .85rem}
+  .ui-next .coach-v2 .workout-review{margin:.7rem .85rem .85rem;padding:.75rem}
+  .ui-next .workout-review-top{grid-template-columns:2.1rem minmax(0,1fr);gap:.6rem}
+  .ui-next .workout-review-icon{width:2.1rem;height:2.1rem}
+  .ui-next .workout-review .insight-confidence{grid-column:2;justify-self:start}
+  .ui-next .workout-review-top h3{font-size:1rem}
+}
+

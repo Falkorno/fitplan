@@ -1,0 +1,46 @@
+/* Communicate state with colour, borders and labels instead of fading content. */
+.dark { --muted: #a7b2ab; }
+
+#full-schedule .session.completed,
+#full-schedule .session.completed > div:first-child,
+#full-schedule .session.skipped,
+.today-session.is-skipped {
+  opacity: 1;
+}
+
+#full-schedule .session.completed {
+  background: color-mix(in srgb, var(--state-complete) 7%, var(--soft));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--state-complete) 28%, transparent);
+}
+#full-schedule .session.completed .session-title {
+  color: color-mix(in srgb, var(--ink) 76%, var(--muted));
+  text-decoration-thickness: 1.5px;
+}
+#full-schedule .session.completed .session-summary {
+  color: color-mix(in srgb, var(--ink) 58%, var(--muted));
+}
+
+#full-schedule .session.skipped .session-summary {
+  color: color-mix(in srgb, var(--ink) 62%, var(--muted));
+}
+#full-schedule .skipped-status {
+  border-color: color-mix(in srgb, var(--state-danger) 55%, var(--line));
+  color: color-mix(in srgb, var(--state-danger) 76%, var(--ink));
+}
+
+@media (prefers-contrast: more) {
+  :root { --line: color-mix(in srgb, var(--ink) 42%, transparent); }
+  .secondary,
+  .icon-btn,
+  input,
+  select,
+  textarea { border-width: 2px; }
+  #full-schedule .session.completed,
+  #full-schedule .session.skipped { box-shadow: inset 0 0 0 2px currentColor; }
+}
+
+@media (forced-colors: active) {
+  #full-schedule .session.completed,
+  #full-schedule .session.skipped,
+  .today-session.is-skipped { forced-color-adjust: auto; border: 2px solid CanvasText; }
+}

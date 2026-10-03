@@ -1,0 +1,22 @@
+button,summary,label[for]{touch-action:manipulation}
+@media(max-width:640px){
+ .icon-btn{width:2.75rem;height:2.75rem;min-height:2.75rem}
+ .primary,.secondary,.danger{min-height:2.75rem}
+ .form-grid input,.form-grid select,.growth-grid input,.history-head select,.workout-library-select select{min-height:2.75rem}
+ .today-actions button,.today-habit{min-height:2.75rem;padding:.5rem .7rem}
+ .today-expand{min-height:2.75rem;padding-inline:.35rem}
+ .habit-check,.color-choice{width:2.75rem;height:2.75rem;min-width:2.75rem;min-height:2.75rem}
+ .habit-dot{width:2rem;height:2rem;min-width:2rem;min-height:2rem}
+ .habit-legend-item button,.habit-remove{width:2.75rem;height:2.75rem;min-width:2.75rem;min-height:2.75rem;margin:-.65rem;place-items:center}
+ .month-grid button{min-height:2.75rem}
+ .missed-row button{min-height:2.75rem;padding:.45rem .65rem}
+ #full-schedule .complete-action{min-height:2.75rem}
+ #full-schedule .session-menu summary,#full-schedule .session-menu-trigger{width:2.75rem!important;height:2.75rem!important;min-width:2.75rem;min-height:2.75rem}
+ #full-schedule .drag-handle{width:2.75rem;height:2.75rem}
+ #full-schedule .day-actions .add{min-height:2.75rem;padding:.55rem .25rem}
+ .personal-workouts>div{grid-template-columns:minmax(0,1fr) 2.75rem 2.75rem}
+ .personal-workouts button{width:2.75rem;height:2.75rem}
+ .activity-pagination .secondary,.history-actions .secondary{min-height:2.75rem}
+ .history-filters button{min-height:2.75rem;padding:.55rem .8rem}
+ .dashboard-card-head>button{min-height:2.75rem;padding:.55rem .65rem}
+}

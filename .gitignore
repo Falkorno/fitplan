@@ -1,0 +1,26 @@
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+
+# Dependencies and generated builds
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Local development and test artefacts
+tmp/
+*.log
+
+# Personal planner exports and restore files
+stride-backup-*.json
+Stride-backup-*.json
+stride-restore-*.json
+Stride-restore-*.json
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

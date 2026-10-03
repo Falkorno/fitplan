@@ -1,0 +1,262 @@
+.habit-orbit {
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  background:
+    radial-gradient(
+      circle at 78% 22%,
+      color-mix(in srgb, var(--orbit-color) 12%, transparent),
+      transparent 38%
+    ),
+    var(--panel);
+}
+.habit-orbit-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.habit-orbit-head .eyebrow {
+  margin: 0;
+}
+.habit-orbit-head h2 {
+  margin-top: 0.16rem;
+}
+.habit-orbit-score {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  gap: 0.05rem 0.35rem;
+  color: var(--orbit-color);
+}
+.habit-orbit-score strong {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.habit-orbit-score span {
+  grid-column: 1/-1;
+  text-align: right;
+  color: var(--muted);
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+.habit-orbit-filters {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  margin-top: 0.85rem;
+  padding-bottom: 0.25rem;
+  scrollbar-width: none;
+}
+.habit-orbit-filters::-webkit-scrollbar {
+  display: none;
+}
+.habit-orbit-filters button {
+  flex: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--soft);
+  padding: 0.42rem 0.65rem;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 750;
+}
+.habit-orbit-filters button:not(:first-child) {
+  border-left: 3px solid var(--chip-color);
+}
+.habit-orbit-filters button.active {
+  border-color: var(--orbit-color);
+  background: color-mix(in srgb, var(--orbit-color) 13%, var(--panel));
+  color: var(--ink);
+}
+.habit-signal-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(10rem, 0.55fr);
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.7rem;
+}
+.habit-signal {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+  background: color-mix(in srgb, var(--soft) 62%, transparent);
+  padding: 0.55rem;
+}
+.habit-signal-weekdays,
+.habit-signal-row {
+  display: grid;
+  grid-template-columns: 2.7rem repeat(7, minmax(0, 1fr));
+  align-items: center;
+  gap: 0.28rem;
+}
+.habit-signal-weekdays {
+  margin-bottom: 0.18rem;
+}
+.habit-signal-weekdays span {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.6rem;
+  font-weight: 800;
+}
+.habit-signal-row + .habit-signal-row {
+  margin-top: 0.24rem;
+}
+.habit-signal-week {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.08rem 0.22rem;
+  padding-right: 0.28rem;
+}
+.habit-signal-week span,
+.habit-signal-week small {
+  font-size: 0.58rem;
+  font-weight: 800;
+}
+.habit-signal-week span {
+  color: var(--ink);
+}
+.habit-signal-week small {
+  color: var(--muted);
+}
+.habit-signal-week i {
+  grid-column: 1 / -1;
+  position: relative;
+  overflow: hidden;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--line);
+}
+.habit-signal-week i::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--week-progress);
+  border-radius: inherit;
+  background: var(--orbit-color);
+  content: "";
+}
+.habit-signal-day {
+  display: flex;
+  min-width: 0;
+  min-height: 3.1rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.18rem;
+  border: 1px solid transparent;
+  border-radius: 0.65rem;
+  background: transparent;
+  padding: 0.22rem 0.04rem;
+  color: var(--muted);
+}
+.habit-signal-day:not(:disabled):hover {
+  background: var(--panel);
+}
+.habit-signal-day.active {
+  border-color: var(--orbit-color);
+  background: color-mix(in srgb, var(--orbit-color) 9%, var(--panel));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--orbit-color) 11%, transparent);
+}
+.habit-signal-day.future {
+  opacity: 0.28;
+}
+.habit-signal-day > small {
+  font-size: 0.58rem;
+  font-weight: 750;
+  line-height: 1;
+}
+.habit-signal-bloom {
+  box-sizing: border-box;
+  display: block;
+  width: 1.65rem;
+  height: 1.65rem;
+  flex: none;
+  border: 1px solid color-mix(in srgb, var(--ink) 13%, transparent);
+  border-radius: 50%;
+  background: var(--signal-fill);
+  box-shadow:
+    inset -3px -3px 4px color-mix(in srgb, black 16%, transparent),
+    inset 3px 3px 3px color-mix(in srgb, white 24%, transparent),
+    0 2px 4px color-mix(in srgb, var(--ink) 12%, transparent);
+  opacity: var(--signal-opacity);
+}
+.habit-signal-bloom.empty {
+  border-style: dashed;
+  box-shadow: none;
+}
+.habit-orbit-detail {
+  border-left: 3px solid var(--orbit-color);
+  border-radius: 0.65rem;
+  background: var(--soft);
+  padding: 0.8rem;
+}
+.habit-orbit-detail span,
+.habit-orbit-detail small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+.habit-orbit-detail strong {
+  display: block;
+  margin-top: 0.2rem;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+}
+.habit-orbit-detail p {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.2rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+.habit-orbit-detail small {
+  margin-top: 0.55rem;
+}
+@media (max-width: 640px) {
+  .habit-orbit {
+    margin-right: -0.25rem;
+    margin-left: -0.25rem;
+    padding: 0.85rem;
+  }
+  .habit-orbit-score strong {
+    font-size: 1.25rem;
+  }
+  .habit-signal-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.55rem;
+  }
+  .habit-signal {
+    padding: 0.42rem 0.3rem;
+  }
+  .habit-signal-weekdays,
+  .habit-signal-row {
+    grid-template-columns: 2.35rem repeat(7, minmax(0, 1fr));
+    gap: 0.14rem;
+  }
+  .habit-signal-day {
+    min-height: 2.75rem;
+  }
+  .habit-signal-bloom {
+    width: 1.45rem;
+    height: 1.45rem;
+  }
+  .habit-orbit-detail {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 0.1rem 0.65rem;
+  }
+  .habit-orbit-detail strong {
+    grid-column: 2;
+    grid-row: 1/3;
+  }
+  .habit-orbit-detail p,
+  .habit-orbit-detail small {
+    grid-column: 1;
+  }
+  .habit-orbit-detail small {
+    margin-top: 0.25rem;
+  }
+}

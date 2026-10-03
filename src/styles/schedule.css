@@ -1,0 +1,107 @@
+﻿.drag-handle{display:grid;height:1.8rem;width:1.5rem;flex:none;touch-action:none;place-items:center;border-radius:.4rem;color:var(--muted);cursor:grab}.drag-handle:active{cursor:grabbing}.session.dragging{z-index:50;opacity:.85;box-shadow:0 12px 30px #0003}.day.drop-target{border-color:#84cc16;background:#84cc1614;box-shadow:0 0 0 2px #84cc16}
+.session-action{display:grid;width:1.55rem;height:1.55rem;flex:none;place-items:center;border:1px solid var(--line);border-radius:.45rem;color:var(--muted)}.session-action:hover{border-color:#84cc16;color:#65a30d}.repeat-options{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-top:1rem}.repeat-options button{display:flex;min-height:68px;flex-direction:column;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:.75rem;background:var(--soft);color:var(--muted)}.repeat-options button b{font-family:'Manrope';font-size:1.15rem;color:var(--ink)}.repeat-options button span{font-size:.65rem}.repeat-options button.selected{border-color:#84cc16;background:#84cc1618;box-shadow:inset 0 0 0 1px #84cc16}.repeat-options button.selected b{color:#65a30d}@media(max-width:420px){.repeat-options{gap:.35rem}.repeat-options button{min-height:58px}.session-action{width:1.45rem}}
+#full-schedule,#full-schedule>div,#full-schedule .day,#full-schedule .session{min-width:0;max-width:100%}#full-schedule .day,#full-schedule .session{overflow:hidden}#full-schedule .session>div:first-child{min-width:0}#full-schedule .session>div:first-child p{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.session-controls{display:grid;grid-template-columns:1.55rem 1.55rem 1.55rem 1.55rem minmax(2.5rem,1fr);align-items:center;gap:.4rem;margin-top:.75rem}.session-controls .edit{min-width:0;justify-self:end;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(max-width:640px){#full-schedule .day{padding:.75rem}#full-schedule .session{padding:.6rem}.session-controls{grid-template-columns:1.55rem 1.45rem 1.45rem 1.45rem minmax(2.25rem,1fr);gap:.32rem}.session-controls .edit{padding-inline:.2rem}.drag-handle{width:1.35rem}}
+#full-schedule .mini-check{width:1.8rem;height:1.8rem;border:2px solid color-mix(in srgb,var(--ink) 45%,var(--line));background:var(--panel);color:transparent;box-shadow:inset 0 0 0 2px var(--panel)}#full-schedule .mini-check:hover{border-color:#65a30d;background:#84cc1614}#full-schedule .mini-check.done{border-color:#65a30d;background:#84cc16;color:#17200e;box-shadow:0 0 0 3px #84cc1628}#full-schedule .mini-check.done svg{stroke-width:3}.session-controls{grid-template-columns:1.8rem repeat(4,1.55rem);justify-content:start}.session-controls .edit-action{margin-left:0;color:var(--muted)}.session-controls .edit-action:hover{color:#65a30d}
+@media(max-width:640px){.session-controls{grid-template-columns:1.8rem repeat(4,1.5rem);gap:.42rem}.session-controls .edit-action{padding:0}}
+/* Full schedule card footer: four quick actions plus a clear edit row. */
+#full-schedule .session-controls{display:grid;width:100%;grid-template-columns:repeat(4,minmax(0,1fr));gap:.35rem}#full-schedule .session-controls .mini-check,#full-schedule .session-controls .session-action{width:100%;height:2rem;min-width:0;border-radius:.55rem}#full-schedule .session-controls .mini-check{border-radius:999px}#full-schedule .session-controls .edit-action{grid-column:1/-1;display:flex;width:100%;height:1.85rem;align-items:center;justify-content:center;gap:.35rem;border-color:color-mix(in srgb,#84cc16 45%,var(--line));background:#84cc1612;color:#4d7c0f;font-size:.66rem;font-weight:800}#full-schedule .session-controls .edit-action span{display:inline}#full-schedule .session-controls .edit-action:hover{border-color:#65a30d;background:#84cc1622;color:#3f6212}
+@media(max-width:640px){#full-schedule .session-controls{grid-template-columns:repeat(4,minmax(0,1fr));gap:.4rem}#full-schedule .session-controls .mini-check,#full-schedule .session-controls .session-action{height:2.15rem}#full-schedule .session-controls .edit-action{height:2rem}}#full-schedule .session-controls .mini-check{width:1.75rem!important;height:1.75rem!important;aspect-ratio:1;justify-self:center;border-radius:50%}
+#full-schedule .session-controls .session-action:not(.edit-action){width:1.75rem;height:1.75rem;justify-self:center}
+#full-schedule .session-controls .mini-check{width:1.7rem!important;height:1.7rem!important;border-width:1.5px;box-shadow:none}#full-schedule .session-controls .mini-check.done{box-shadow:0 0 0 1.5px #84cc1628}
+.day-badges{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:.3rem}.wfh-badge{border:1px solid color-mix(in srgb,#3b82f6 38%,var(--line));border-radius:999px;background:#3b82f616;padding:.22rem .45rem;color:#2563eb;font-size:.56rem;font-weight:900;letter-spacing:.08em}.day-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:.8rem}.day-actions .add{margin-top:0}
+
+.schedule-placeholder{height:5rem;border:1px solid var(--line);border-radius:1rem;background:var(--panel);padding:1rem}.schedule-placeholder span{display:block;width:9rem;height:.75rem;border-radius:999px;background:var(--soft)}
+
+/* Agenda layout: one full-width row per day, with multiple sessions grouped together. */
+#full-schedule .schedule-week{display:grid;gap:.65rem}
+#full-schedule .day{display:grid;grid-template-columns:8.5rem minmax(0,1fr);min-height:0;overflow:visible;padding:.8rem .9rem}
+#full-schedule .day-heading{display:flex;min-width:0;align-items:flex-start;align-content:flex-start;flex-wrap:wrap;gap:.35rem .5rem;border-right:1px solid var(--line);padding:.25rem .9rem .25rem 0}
+#full-schedule .day-heading>div{width:100%}
+#full-schedule .day-name{color:var(--muted);font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+#full-schedule .day-date{margin-top:.08rem;font-family:var(--font-body);font-size:1.15rem;font-weight:750}
+#full-schedule .session-count,#full-schedule .today-label{border-radius:999px;background:var(--soft);padding:.22rem .42rem;color:var(--muted);font-size:.58rem;font-weight:800;white-space:nowrap}
+#full-schedule .today-label{background:#84cc1622;color:#4d7c0f}
+#full-schedule .day-body{display:grid;min-width:0;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:.75rem;padding-left:.9rem}
+#full-schedule .day-sessions{display:grid;min-width:0;grid-template-columns:repeat(auto-fit,minmax(min(15rem,100%),18rem));gap:.55rem}
+#full-schedule .session{height:100%;padding:.65rem .7rem}
+#full-schedule .session-title{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-height:1.25}
+#full-schedule .session-controls{grid-template-columns:repeat(5,1.75rem);justify-content:start;gap:.35rem;margin-top:.55rem}
+#full-schedule .session-controls .mini-check,#full-schedule .session-controls .session-action,#full-schedule .session-controls .edit-action{grid-column:auto;width:1.75rem!important;height:1.75rem;border-radius:.5rem;background:var(--panel);padding:0}
+#full-schedule .session-controls .mini-check{border-radius:50%}
+#full-schedule .session-controls .edit-action{display:grid;border-color:var(--line);color:var(--muted)}
+#full-schedule .session-controls .edit-action span{display:none}
+#full-schedule .day-badges{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:.3rem}.wfh-badge{border:1px solid color-mix(in srgb,#3b82f6 38%,var(--line));border-radius:999px;background:#3b82f616;padding:.22rem .45rem;color:#2563eb;font-size:.56rem;font-weight:900;letter-spacing:.08em}.day-actions{width:7.25rem;flex-direction:column;gap:.25rem;margin:0}
+#full-schedule .day-actions .add{width:100%;border-radius:.55rem;padding:.42rem .5rem}
+@media(max-width:760px){#full-schedule .day{grid-template-columns:1fr;padding:.75rem}#full-schedule .day-heading{align-items:center;border-right:0;border-bottom:1px solid var(--line);padding:0 0 .6rem}#full-schedule .day-heading>div{width:auto;flex:1}#full-schedule .day-name,#full-schedule .day-date{display:inline;font-size:.75rem}#full-schedule .day-date{margin-left:.35rem}#full-schedule .day-body{display:block;padding:0}#full-schedule .day-sessions{grid-template-columns:1fr;gap:.45rem;padding-top:.6rem}#full-schedule .day-badges{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:.3rem}.wfh-badge{border:1px solid color-mix(in srgb,#3b82f6 38%,var(--line));border-radius:999px;background:#3b82f616;padding:.22rem .45rem;color:#2563eb;font-size:.56rem;font-weight:900;letter-spacing:.08em}.day-actions{width:auto;flex-direction:row;gap:.75rem;margin-top:.65rem}#full-schedule .day-actions .add{width:auto;padding:.35rem 0}#full-schedule .session-controls{grid-template-columns:repeat(5,1.8rem)}}
+/* Simplified card hierarchy: completion stays visible; secondary actions live in one menu. */
+#full-schedule .session-open{overflow:visible;cursor:pointer;transition:border-color .15s,background .15s,box-shadow .15s,transform .15s}
+#full-schedule .session-open:hover{box-shadow:0 5px 16px #10221812}
+#full-schedule .session-open:focus-visible{outline:2px solid #84cc16;outline-offset:2px}
+#full-schedule .session.completed{opacity:.78}
+#full-schedule .session-controls{display:flex;grid-template-columns:none;align-items:center;gap:.45rem;margin-top:.6rem}
+#full-schedule .complete-action{display:inline-flex;min-height:1.9rem;align-items:center;gap:.35rem;border:1px solid color-mix(in srgb,var(--ink) 35%,var(--line));border-radius:999px;background:var(--panel);padding:.25rem .6rem;color:var(--muted);font-size:.65rem;font-weight:800}
+#full-schedule .complete-action.done{border-color:#65a30d;background:#84cc16;color:#17200e}
+#full-schedule .session-edit-hint{display:inline-flex;align-items:center;gap:.28rem;color:var(--muted);font-size:.63rem;font-weight:800}
+#full-schedule .session-menu{position:relative;margin-left:auto}
+#full-schedule .session-menu-trigger{display:grid!important;width:1.9rem!important;height:1.9rem;place-items:center;border:1px solid var(--line);border-radius:.55rem;background:var(--panel);padding:0!important;color:var(--muted)}
+#full-schedule .session-menu.open .session-menu-trigger{border-color:#84cc16;color:#4d7c0f}
+#full-schedule .session-menu-backdrop{position:fixed;inset:0;z-index:180;display:block!important;width:auto!important;border:0!important;border-radius:0!important;background:#07110b99!important;padding:0!important;backdrop-filter:blur(2px)}
+#full-schedule .session-menu-panel{position:fixed;right:0;bottom:0;left:0;z-index:181;display:grid;width:100%;max-height:calc(100dvh - max(1rem,env(safe-area-inset-top)));overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;border:0;border-top:1px solid var(--line);border-radius:1.2rem 1.2rem 0 0;background:var(--panel);padding:.6rem .75rem calc(.75rem + env(safe-area-inset-bottom));box-shadow:0 -12px 34px #0003;animation:sheet-in .2s ease-out;opacity:1;backdrop-filter:none}
+#full-schedule .session-menu-panel>button{display:flex;width:100%;min-height:2.75rem;align-items:center;gap:.55rem;border-radius:.5rem;padding:.55rem .6rem;color:var(--ink);font-size:.78rem;font-weight:700;text-align:left}
+#full-schedule .session-menu-panel>button:hover{background:var(--soft)}
+#full-schedule .session-menu-panel>button.edit-workout{color:color-mix(in srgb,#65a30d 78%,var(--ink));font-weight:800}
+#full-schedule .session-menu-panel>button.delete{color:#dc4747}
+#full-schedule .session-menu-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--line);padding:.25rem .25rem .65rem}
+#full-schedule .session-menu-head>div{display:grid;min-width:0}#full-schedule .session-menu-head small{color:var(--muted);font-size:.55rem;font-weight:800;letter-spacing:.12em}#full-schedule .session-menu-head b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.85rem;text-decoration:none}
+#full-schedule .session-menu-head>button{display:grid;width:2.4rem;height:2.4rem;place-items:center;padding:0}
+#full-schedule .sheet-grab{display:grid!important;width:100%;height:2.75rem;touch-action:none;place-items:center;padding:0!important;cursor:ns-resize}#full-schedule .sheet-grab span{display:block;width:2.75rem;height:.28rem;border-radius:999px;background:color-mix(in srgb,var(--ink) 28%,var(--line))}
+#full-schedule .session.completed{opacity:1}#full-schedule .session.completed>div:first-child{opacity:.62}
+@media(min-width:641px){#full-schedule .session-menu-panel{right:1rem;bottom:1rem;left:auto;width:min(28rem,calc(100% - 2rem));border:1px solid var(--line);border-radius:1.2rem;padding-bottom:.75rem}}
+@media(max-width:760px){#full-schedule .session-edit-hint{display:none}#full-schedule .complete-action{min-height:2.15rem;padding-inline:.7rem}#full-schedule .session-menu-trigger{width:2.15rem!important;height:2.15rem}}
+#full-schedule .strava-linked{display:inline-flex;align-items:center;gap:.22rem;margin-top:.3rem;border-radius:999px;background:color-mix(in srgb,var(--sport-run) 12%,var(--panel));padding:.18rem .38rem;color:color-mix(in srgb,var(--sport-run) 72%,var(--ink));font-size:.56rem;font-weight:800}
+
+/* Final schedule alignment layer */
+#full-schedule .session>div:first-child{display:flex;align-items:flex-start;gap:.5rem}
+#full-schedule .session>div:first-child>svg{flex:none;margin-top:.15rem}
+#full-schedule .session>div:first-child>.min-w-0{display:flex;min-height:2.55rem;flex:1;flex-direction:column;justify-content:flex-start}
+#full-schedule .drag-handle{display:grid;flex:none;align-self:flex-start;place-items:center;margin:-.2rem -.25rem 0 0}
+#full-schedule .session-badges{display:flex;min-height:1.25rem;align-items:center;flex-wrap:wrap;gap:.3rem;margin-top:.3rem}
+#full-schedule .session-badges:empty{display:none;min-height:0;margin:0}
+#full-schedule .session-status,#full-schedule .strava-linked{display:inline-flex;min-height:1.25rem;align-items:center;gap:.24rem;margin:0;padding:.16rem .4rem;line-height:1}
+#full-schedule .session-status svg,#full-schedule .strava-linked svg{flex:none}
+#full-schedule .session-controls{--schedule-control:2.15rem;display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr) var(--schedule-control);align-items:center;gap:.5rem;margin-top:.65rem}
+#full-schedule .complete-action{box-sizing:border-box;height:var(--schedule-control);min-height:var(--schedule-control);justify-self:start;margin:0;padding:0 .7rem;line-height:1;white-space:nowrap}
+#full-schedule .complete-action svg{flex:none}
+#full-schedule .session-edit-hint{align-self:center;justify-self:start;line-height:1;white-space:nowrap}
+#full-schedule .session-menu{display:grid;width:var(--schedule-control);height:var(--schedule-control);place-items:center;margin:0;justify-self:end}
+#full-schedule .session-menu-trigger{box-sizing:border-box;width:var(--schedule-control)!important;height:var(--schedule-control)!important;min-height:var(--schedule-control);margin:0;border-radius:.6rem}
+#full-schedule .session-menu-panel>button:not(.sheet-grab){display:grid;grid-template-columns:1.25rem minmax(0,1fr);align-items:center;column-gap:.65rem;min-height:2.75rem;padding:.6rem .7rem;line-height:1.2}
+#full-schedule .session-menu-panel>button:not(.sheet-grab)>svg{width:1.1rem;height:1.1rem;justify-self:center}
+#full-schedule .session-menu-head>button{flex:none;align-self:center;border-radius:.6rem}
+@media(max-width:640px){
+ #full-schedule .session{padding:.7rem}
+ #full-schedule .session-controls{--schedule-control:2.75rem;grid-template-columns:minmax(0,1fr) var(--schedule-control);gap:.6rem}
+ #full-schedule .complete-action{width:max-content;max-width:100%;padding-inline:.85rem}
+ #full-schedule .session-edit-hint{display:none}
+ #full-schedule .drag-handle{width:2.75rem;height:2.75rem;margin:-.45rem -.5rem 0 0;border-radius:.65rem}
+ #full-schedule .session-menu-panel>button:not(.sheet-grab){min-height:3rem;padding:.68rem .75rem}
+}
+
+/* Compact card hierarchy: card tap edits; footer contains primary and overflow actions only. */
+#full-schedule .session-summary{margin-top:.18rem;color:var(--muted);font-size:.7rem;line-height:1.35}
+#full-schedule .session-controls{grid-template-columns:minmax(0,1fr) var(--schedule-control)}
+#full-schedule .session-menu{grid-column:2}
+
+/* Strava evidence is visible without opening the workout editor. */
+#full-schedule .session-activity-details{display:flex;min-width:0;flex-wrap:wrap;gap:.28rem;margin-top:.38rem}
+#full-schedule .session-activity-details span{display:inline-flex;min-height:1.25rem;align-items:center;border-radius:999px;padding:.16rem .42rem;font-size:.56rem;font-weight:800;line-height:1;white-space:nowrap}
+#full-schedule .activity-metric{border:1px solid color-mix(in srgb,var(--ink) 22%,var(--line));background:color-mix(in srgb,var(--ink) 7%,var(--panel));color:var(--ink)}
+#full-schedule .activity-tag{border:1px solid color-mix(in srgb,#84cc16 32%,var(--line));background:color-mix(in srgb,#84cc16 10%,var(--panel));color:color-mix(in srgb,#4d7c0f 78%,var(--ink));text-transform:capitalize}
+#full-schedule .session:has(.session-activity-details){border-color:color-mix(in srgb,var(--ink) 14%,var(--line))}
+@media(max-width:420px){#full-schedule .session-activity-details{gap:.22rem}#full-schedule .session-activity-details span{padding-inline:.36rem;font-size:.53rem}}
+
+#full-schedule .day.is-rest{border-color:color-mix(in srgb,var(--selected) 45%,var(--line));background:color-mix(in srgb,var(--selected) 5%,var(--panel))}
+#full-schedule .rest-badge{display:inline-flex;align-items:center;gap:.25rem;border:1px solid color-mix(in srgb,var(--selected) 38%,var(--line));border-radius:999px;background:color-mix(in srgb,var(--selected) 9%,var(--panel));padding:.22rem .45rem;color:var(--selected);font-size:.62rem;font-weight:750}
+#full-schedule .rest-day-action{display:inline-flex;align-items:center;gap:.3rem;color:var(--muted);font-size:.75rem;font-weight:650}
+#full-schedule .rest-day-action:hover{color:var(--selected)}

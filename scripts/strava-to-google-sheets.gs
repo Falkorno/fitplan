@@ -1,0 +1,498 @@
+const STRAVA_CLIENT_ID = '154451';
+const STRAVA_SCOPE = 'activity:read';
+const STRAVA_WEBHOOK_RELAY = 'https://stride.jamesdt.synology.me/api/strava-webhook';
+const ACTIVITY_SHEET = 'Activities';
+const BEST_EFFORT_SHEET = 'Best Efforts';
+const BEST_EFFORT_HEADERS = ['distance','time seconds','date','title','url','strava id','last synced'];
+const BEST_EFFORT_BATCH_SIZE = 20;
+const BEST_EFFORT_VERSION = '2';
+const HEADERS = [
+  'date', 'title', 'sport', 'duration (min)', 'km', 'speed (km/h)',
+  'heart rate', 'pace (min/km)', 'max heart rate', 'cadence', 'kudos',
+  'elevation (m)', 'url', 'strava id', 'last synced',
+  'average power (w)', 'weighted power (w)', 'max power (w)', 'calories',
+  'kilojoules', 'workout type', 'trainer', 'commute'
+];
+
+function onOpen() {
+  SpreadsheetApp.getUi().createMenu('Strava Sync')
+    .addItem('Setup Strava', 'showStravaSetup')
+    .addItem('Sync now', 'syncActivities')
+    .addItem('Full refresh', 'fullRefresh')
+    .addItem('Backfill best efforts', 'runBestEffortBackfill')
+    .addItem('Install real-time webhook', 'installStravaWebhook')
+    .addSeparator()
+    .addItem('Install 15-minute refresh', 'installRefreshTrigger')
+    .addItem('Disconnect Strava', 'disconnectStrava')
+    .addToUi();
+}
+
+function showStravaSetup() {
+  const html = HtmlService.createHtmlOutput(`
+    <style>
+      body{font:14px Arial,sans-serif;padding:16px;color:#172019}label{display:block;font-weight:700;margin-bottom:6px}
+      input{box-sizing:border-box;width:100%;padding:10px;border:1px solid #ccd3cc;border-radius:7px}
+      button{margin-top:12px;padding:10px 14px;border:0;border-radius:7px;background:#fc4c02;color:white;font-weight:700;cursor:pointer}
+      p{color:#5f6c63;line-height:1.45}.status{margin-top:12px}.error{color:#b91c1c}
+    </style>
+    <label for="secret">Strava client secret</label>
+    <input id="secret" type="password" autocomplete="off" placeholder="Paste the secret from Strava API settings">
+    <button onclick="connect()">Connect with Strava</button>
+    <p>The secret is stored in this script's private properties, never in spreadsheet cells.</p>
+    <div id="status" class="status"></div>
+    <script>
+      function connect(){
+        const secret=document.getElementById('secret').value.trim(),status=document.getElementById('status');
+        if(!secret){status.className='status error';status.textContent='Enter the client secret first.';return}
+        status.className='status';status.textContent='Preparing Strava authorization…';
+        google.script.run.withSuccessHandler(url=>{status.innerHTML='<a target="_blank" href="'+url+'">Continue to Strava authorization</a>';window.open(url,'_blank')})
+          .withFailureHandler(error=>{status.className='status error';status.textContent=error.message})
+          .saveStravaSecret(secret);
+      }
+    </script>`).setWidth(430).setHeight(300);
+  SpreadsheetApp.getUi().showModalDialog(html, 'Setup Strava');
+}
+
+function saveStravaSecret(secret) {
+  if (!secret || String(secret).length < 8) throw new Error('The client secret does not look valid.');
+  const callback = getStravaCallbackUrl();
+  const state = ScriptApp.newStateToken()
+    .withMethod('stravaCallback')
+    .withTimeout(3600)
+    .createToken();
+  PropertiesService.getScriptProperties().setProperties({
+    STRAVA_CLIENT_SECRET: String(secret).trim(),
+    SPREADSHEET_ID: SpreadsheetApp.getActiveSpreadsheet().getId()
+  });
+  return 'https://www.strava.com/oauth/authorize?' + toQuery({
+    client_id: STRAVA_CLIENT_ID,
+    redirect_uri: callback,
+    response_type: 'code',
+    approval_prompt: 'auto',
+    scope: STRAVA_SCOPE,
+    state
+  });
+}
+
+function getStravaCallbackUrl() {
+  return 'https://script.google.com/macros/d/' + ScriptApp.getScriptId() + '/usercallback';
+}
+
+function stravaCallback(event) {
+  try {
+    if (event.parameter.error) throw new Error('Strava authorization was declined.');
+    if (!event.parameter.code) throw new Error('Strava did not return an authorization code.');
+    const token = stravaRequest('https://www.strava.com/oauth/token', {
+      method: 'post',
+      payload: {
+        client_id: STRAVA_CLIENT_ID,
+        client_secret: requiredProperty('STRAVA_CLIENT_SECRET'),
+        code: event.parameter.code,
+        grant_type: 'authorization_code'
+      }
+    }, false);
+    storeToken(token);
+    syncActivities();
+    installRefreshTrigger();
+    return HtmlService.createHtmlOutput('<h2>Stride is connected to Strava</h2><p>Your activities have been imported. You can close this tab and return to the spreadsheet.</p>');
+  } catch (error) {
+    return HtmlService.createHtmlOutput('<h2>Strava connection failed</h2><p>' + escapeHtml(error.message) + '</p>');
+  }
+}
+
+function syncActivities() {
+  const props = PropertiesService.getScriptProperties();
+  const spreadsheet = SpreadsheetApp.openById(requiredProperty('SPREADSHEET_ID'));
+  const sheet = getActivitySheet(spreadsheet);
+  const previous = readExisting(sheet);
+  const lastEpoch = Number(props.getProperty('LAST_ACTIVITY_EPOCH') || 0);
+  const after = lastEpoch ? Math.max(0, lastEpoch - 172800) : 0;
+  const incoming = fetchActivities(after);
+  incoming.forEach(activity => previous.set(String(activity.id), activityRow(activity)));
+  const rows = [...previous.values()].sort((a, b) => b[0].getTime() - a[0].getTime());
+  sheet.clearContents();
+  sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
+  if (rows.length) sheet.getRange(2, 1, rows.length, HEADERS.length).setValues(rows);
+  formatActivitySheet(sheet, rows.length);
+  if (incoming.length) {
+    const newest = Math.max(...incoming.map(activity => Math.floor(new Date(activity.start_date).getTime() / 1000)));
+    props.setProperty('LAST_ACTIVITY_EPOCH', String(Math.max(lastEpoch, newest)));
+  }
+  props.setProperty('LAST_SYNCED_AT', new Date().toISOString());
+  backfillBestEfforts();
+  return `${incoming.length} activities checked; ${rows.length} total rows.`;
+}
+
+function fullRefresh() {
+  PropertiesService.getScriptProperties().deleteProperty('LAST_ACTIVITY_EPOCH');
+  PropertiesService.getScriptProperties().deleteProperty('BEST_EFFORT_CURSOR');
+  const spreadsheet = SpreadsheetApp.openById(requiredProperty('SPREADSHEET_ID'));
+  getActivitySheet(spreadsheet).clearContents();
+  getBestEffortSheet(spreadsheet).clearContents();
+  syncActivities();
+  SpreadsheetApp.getUi().alert('Full Strava refresh completed.');
+}
+
+function fetchActivities(after) {
+  const activities = [];
+  for (let page = 1; page <= 20; page++) {
+    const url = 'https://www.strava.com/api/v3/athlete/activities?' + toQuery({page, per_page: 200, after});
+    const batch = stravaRequest(url, {method: 'get', headers: {Authorization: 'Bearer ' + accessToken()}});
+    if (!Array.isArray(batch)) throw new Error('Unexpected activity response from Strava.');
+    activities.push(...batch);
+    if (batch.length < 200) break;
+  }
+  return activities;
+}
+
+function activityRow(activity) {
+  const km = Number(activity.distance || 0) / 1000;
+  const movingSeconds = Number(activity.moving_time || 0);
+  const speedKph = Number(activity.average_speed || 0) * 3.6;
+  const paceMinutes = km > 0 ? movingSeconds / 60 / km : '';
+  return [
+    new Date(activity.start_date_local || activity.start_date),
+    activity.name || '',
+    activity.sport_type || activity.type || '',
+    round(movingSeconds / 60, 2),
+    round(km, 3),
+    round(speedKph, 2),
+    numberOrBlank(activity.average_heartrate, 1),
+    paceMinutes === '' ? '' : round(paceMinutes, 2),
+    numberOrBlank(activity.max_heartrate, 1),
+    numberOrBlank(activity.average_cadence, 1),
+    Number(activity.kudos_count || 0),
+    numberOrBlank(activity.total_elevation_gain, 1),
+    'https://www.strava.com/activities/' + activity.id,
+    String(activity.id),
+    new Date(),
+    numberOrBlank(activity.average_watts, 1),
+    numberOrBlank(activity.weighted_average_watts, 1),
+    numberOrBlank(activity.max_watts, 0),
+    numberOrBlank(activity.calories, 0),
+    numberOrBlank(activity.kilojoules, 1),
+    activity.workout_type === undefined ? '' : Number(activity.workout_type),
+    Boolean(activity.trainer),
+    Boolean(activity.commute)
+  ];
+}
+
+function runBestEffortBackfill() {
+  SpreadsheetApp.getUi().alert(backfillBestEfforts());
+}
+
+function backfillBestEfforts() {
+  const props = PropertiesService.getScriptProperties();
+  const spreadsheet = SpreadsheetApp.openById(requiredProperty('SPREADSHEET_ID'));
+  const activitySheet = getActivitySheet(spreadsheet);
+  const effortSheet = getBestEffortSheet(spreadsheet);
+  if (activitySheet.getLastRow() < 2) return 'No running activities to scan.';
+  const records = readBestRecords(effortSheet);
+  if (props.getProperty('BEST_EFFORT_VERSION') !== BEST_EFFORT_VERSION) { props.setProperty('BEST_EFFORT_CURSOR', '0'); props.setProperty('BEST_EFFORT_VERSION', BEST_EFFORT_VERSION); }
+  const activities = activitySheet.getRange(2, 1, activitySheet.getLastRow() - 1, HEADERS.length).getValues()
+    .filter(row => /run/i.test(String(row[2])) && row[13])
+    .sort((a, b) => recordScanPriority(a) - recordScanPriority(b) || Number(a[13]) - Number(b[13]));
+  const cursor = Math.min(Number(props.getProperty('BEST_EFFORT_CURSOR') || 0), activities.length);
+  const pending = activities.slice(cursor, cursor + BEST_EFFORT_BATCH_SIZE);
+  let processed = 0, rateLimited = false;
+  for (const row of pending) {
+    try {
+      const detail = stravaRequest('https://www.strava.com/api/v3/activities/' + row[13] + '?include_all_efforts=false', {method: 'get', headers: {Authorization: 'Bearer ' + accessToken()}});
+      (detail.best_efforts || []).forEach(effort => {
+        const key = bestEffortKey(effort.name);
+        const seconds = Number(effort.elapsed_time || 0);
+        if (key && seconds > 0 && (!records[key] || seconds < records[key].seconds)) records[key] = {seconds, date: row[0], title: row[1], url: row[12], id: String(row[13])};
+      });
+      processed++;
+      props.setProperty('BEST_EFFORT_CURSOR', String(cursor + processed));
+    } catch (error) {
+      if (String(error.message || error).includes('429')) { rateLimited = true; break; }
+      throw error;
+    }
+  }
+  const next = cursor + processed, remaining = Math.max(0, activities.length - next);
+  writeBestRecords(effortSheet, records);
+  if (!remaining) ScriptApp.getProjectTriggers().filter(trigger => trigger.getHandlerFunction() === 'backfillBestEfforts').forEach(trigger => ScriptApp.deleteTrigger(trigger));
+  return processed + ' runs scanned; ' + remaining + ' remaining.' + (rateLimited ? ' Strava rate limit reached; the scan will resume automatically.' : ' Only the fastest time for each distance is stored.');
+}
+
+function recordScanPriority(row) {
+  const km = Number(row[4] || 0);
+  return km >= 40 ? Math.min(Math.abs(km - 42.195), Math.abs(km - 50)) : 100 + Math.min(Math.abs(km - 21.0975), Math.abs(km - 10), Math.abs(km - 5));
+}
+
+function bestEffortKey(name) {
+  const value = String(name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (value === '5k' || value === '5000m') return '5k';
+  if (value === '10k' || value === '10000m') return '10k';
+  if (value === '50k' || value === '50000m') return '50k';
+  if (value === 'halfmarathon') return 'half';
+  if (value === 'marathon') return 'marathon';
+}
+
+function readBestRecords(sheet) {
+  const records = {};
+  if (sheet.getLastRow() < 2) return records;
+  const values = sheet.getDataRange().getValues();
+  const headers = values.shift().map(value => String(value).toLowerCase());
+  if (headers.indexOf('distance') >= 0) {
+    values.forEach(row => {
+      const key = bestEffortKey(row[headers.indexOf('distance')]);
+      const seconds = Number(row[headers.indexOf('time seconds')] || 0);
+      if (key && seconds > 0) records[key] = {seconds, date: row[headers.indexOf('date')], title: row[headers.indexOf('title')], url: row[headers.indexOf('url')], id: String(row[headers.indexOf('strava id')])};
+    });
+    return records;
+  }
+  const legacy = {'5k': '5k seconds', '10k': '10k seconds', '50k': '50k seconds', half: 'half marathon seconds', marathon: 'marathon seconds'};
+  values.forEach(row => Object.keys(legacy).forEach(key => {
+    const seconds = Number(row[headers.indexOf(legacy[key])] || 0);
+    if (seconds > 0 && (!records[key] || seconds < records[key].seconds)) records[key] = {seconds, date: row[0], title: row[1], url: row[6], id: String(row[7])};
+  }));
+  return records;
+}
+
+function writeBestRecords(sheet, records) {
+  const labels = {'5k': '5K', '10k': '10K', '50k': '50K Ultra', half: 'Half Marathon', marathon: 'Marathon'};
+  const rows = ['5k','10k','half','marathon','50k'].map(key => {
+    const record = records[key];
+    return [labels[key], record ? record.seconds : '', record ? record.date : '', record ? record.title : '', record ? record.url : '', record ? record.id : '', new Date()];
+  });
+  sheet.clearContents();
+  sheet.getRange(1, 1, 1, BEST_EFFORT_HEADERS.length).setValues([BEST_EFFORT_HEADERS]);
+  sheet.getRange(2, 1, rows.length, BEST_EFFORT_HEADERS.length).setValues(rows);
+  formatBestEffortSheet(sheet);
+}
+
+function getBestEffortSheet(spreadsheet) {
+  return spreadsheet.getSheetByName(BEST_EFFORT_SHEET) || spreadsheet.insertSheet(BEST_EFFORT_SHEET);
+}
+
+function formatBestEffortSheet(sheet) {
+  sheet.setFrozenRows(1);
+  sheet.getRange(1, 1, 1, BEST_EFFORT_HEADERS.length).setFontWeight('bold').setBackground('#dbeafe');
+  sheet.getRange(2, 2, 5, 1).setNumberFormat('0');
+  sheet.getRange(2, 3, 5, 1).setNumberFormat('dd/MM/yyyy hh:mm');
+  sheet.getRange(2, 7, 5, 1).setNumberFormat('dd/MM/yyyy hh:mm');
+  sheet.autoResizeColumns(1, BEST_EFFORT_HEADERS.length);
+  sheet.setColumnWidth(4, 280);
+  sheet.setColumnWidth(5, 250);
+}
+
+function doGet(event) {
+  const challenge = event && event.parameter && event.parameter['hub.challenge'];
+  const token = event && event.parameter && event.parameter['hub.verify_token'];
+  const expected = PropertiesService.getScriptProperties().getProperty('STRAVA_WEBHOOK_VERIFY_TOKEN');
+  if (!challenge || !expected || token !== expected) return ContentService.createTextOutput('Forbidden').setMimeType(ContentService.MimeType.TEXT);
+  return ContentService.createTextOutput(JSON.stringify({'hub.challenge': challenge})).setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(event) {
+  try {
+    const payload = JSON.parse(event.postData.contents || '{}');
+    const props = PropertiesService.getScriptProperties();
+    const athleteId = props.getProperty('STRAVA_ATHLETE_ID'), subscriptionId = props.getProperty('STRAVA_WEBHOOK_SUBSCRIPTION_ID');
+    if ((athleteId && String(payload.owner_id) !== athleteId) || (subscriptionId && String(payload.subscription_id) !== subscriptionId)) return ContentService.createTextOutput('Ignored');
+    if (payload.object_type === 'activity' && payload.object_id) {
+      try {
+        payload.aspect_type === 'delete' ? removeStravaActivity(payload.object_id) : upsertStravaActivity(payload.object_id);
+      } catch (error) {
+        console.error(error);
+        queueStravaWebhookEvent(payload);
+      }
+    }
+    return ContentService.createTextOutput('OK');
+  } catch (error) {
+    console.error(error);
+    return ContentService.createTextOutput('OK');
+  }
+}
+
+function queueStravaWebhookEvent(payload) {
+  const props = PropertiesService.getScriptProperties();
+  const queued = JSON.parse(props.getProperty('STRAVA_WEBHOOK_QUEUE') || '[]').filter(item => String(item.object_id) !== String(payload.object_id));
+  queued.push({object_id: String(payload.object_id), aspect_type: String(payload.aspect_type || 'update')});
+  props.setProperty('STRAVA_WEBHOOK_QUEUE', JSON.stringify(queued.slice(-20)));
+  if (!ScriptApp.getProjectTriggers().some(trigger => trigger.getHandlerFunction() === 'processStravaWebhookQueue')) ScriptApp.newTrigger('processStravaWebhookQueue').timeBased().after(1000).create();
+}
+
+function processStravaWebhookQueue() {
+  const props = PropertiesService.getScriptProperties();
+  const queued = JSON.parse(props.getProperty('STRAVA_WEBHOOK_QUEUE') || '[]');
+  props.deleteProperty('STRAVA_WEBHOOK_QUEUE');
+  ScriptApp.getProjectTriggers().filter(trigger => trigger.getHandlerFunction() === 'processStravaWebhookQueue').forEach(trigger => ScriptApp.deleteTrigger(trigger));
+  queued.forEach(event => { try { event.aspect_type === 'delete' ? removeStravaActivity(event.object_id) : upsertStravaActivity(event.object_id); } catch (error) { console.error(error); queueStravaWebhookEvent(event); } });
+}
+
+function upsertStravaActivity(activityId) {
+  const spreadsheet = SpreadsheetApp.openById(requiredProperty('SPREADSHEET_ID'));
+  const sheet = getActivitySheet(spreadsheet);
+  const previous = readExisting(sheet);
+  const activity = stravaRequest('https://www.strava.com/api/v3/activities/' + activityId, {method: 'get', headers: {Authorization: 'Bearer ' + accessToken()}});
+  previous.set(String(activity.id), activityRow(activity));
+  writeActivityRows(sheet, previous);
+  if (/run/i.test(String(activity.sport_type || activity.type || ''))) scanSingleBestEffort(activity, spreadsheet);
+}
+
+function removeStravaActivity(activityId) {
+  const spreadsheet = SpreadsheetApp.openById(requiredProperty('SPREADSHEET_ID'));
+  const sheet = getActivitySheet(spreadsheet);
+  const previous = readExisting(sheet);
+  previous.delete(String(activityId));
+  writeActivityRows(sheet, previous);
+  const effortSheet = getBestEffortSheet(spreadsheet);
+  if (effortSheet.getLastRow() > 1) {
+    const ids = effortSheet.getRange(2, 6, effortSheet.getLastRow() - 1, 1).getDisplayValues();
+    ids.forEach((row, index) => { if (String(row[0]) === String(activityId)) effortSheet.getRange(index + 2, 2, 1, 5).clearContent(); });
+  }
+  PropertiesService.getScriptProperties().setProperty('BEST_EFFORT_CURSOR', '0');
+  installBestEffortBackfillTrigger();
+}
+
+function writeActivityRows(sheet, activities) {
+  const rows = [...activities.values()].sort((a, b) => b[0].getTime() - a[0].getTime());
+  sheet.clearContents();
+  sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
+  if (rows.length) sheet.getRange(2, 1, rows.length, HEADERS.length).setValues(rows);
+  formatActivitySheet(sheet, rows.length);
+}
+
+function scanSingleBestEffort(activity, spreadsheet) {
+  const effortSheet = getBestEffortSheet(spreadsheet);
+  const records = readBestRecords(effortSheet);
+  (activity.best_efforts || []).forEach(effort => {
+    const key = bestEffortKey(effort.name), seconds = Number(effort.elapsed_time || 0);
+    if (key && seconds > 0 && (!records[key] || seconds < records[key].seconds)) records[key] = {seconds, date: new Date(activity.start_date_local || activity.start_date), title: activity.name || '', url: 'https://www.strava.com/activities/' + activity.id, id: String(activity.id)};
+  });
+  writeBestRecords(effortSheet, records);
+}
+
+function installStravaWebhook() {
+  const callback = ScriptApp.getService().getUrl();
+  if (!callback) {
+    SpreadsheetApp.getUi().alert('Deploy this Apps Script as a Web app first, then run Install real-time webhook again.');
+    return;
+  }
+  const props = PropertiesService.getScriptProperties();
+  const relayCallback = STRAVA_WEBHOOK_RELAY + '?forward=' + encodeURIComponent(callback);
+  const verifyToken = Utilities.getUuid();
+  props.setProperty('STRAVA_WEBHOOK_VERIFY_TOKEN', verifyToken);
+  const existing = stravaRequest('https://www.strava.com/api/v3/push_subscriptions?' + toQuery({client_id: STRAVA_CLIENT_ID, client_secret: requiredProperty('STRAVA_CLIENT_SECRET')}), {method: 'get'});
+  if (Array.isArray(existing) && existing.length && existing[0].callback_url !== relayCallback) {
+    stravaRequest('https://www.strava.com/api/v3/push_subscriptions/' + existing[0].id + '?' + toQuery({client_id: STRAVA_CLIENT_ID, client_secret: requiredProperty('STRAVA_CLIENT_SECRET')}), {method: 'delete'});
+    existing.length = 0;
+  }
+  if (!Array.isArray(existing) || !existing.length) {
+    const created = stravaRequest('https://www.strava.com/api/v3/push_subscriptions', {method: 'post', payload: {client_id: STRAVA_CLIENT_ID, client_secret: requiredProperty('STRAVA_CLIENT_SECRET'), callback_url: relayCallback, verify_token: verifyToken}});
+    if (created.id) props.setProperty('STRAVA_WEBHOOK_SUBSCRIPTION_ID', String(created.id));
+  }
+  if (Array.isArray(existing) && existing.length) props.setProperty('STRAVA_WEBHOOK_SUBSCRIPTION_ID', String(existing[0].id));
+  ScriptApp.getProjectTriggers().filter(trigger => trigger.getHandlerFunction() === 'syncActivities').forEach(trigger => ScriptApp.deleteTrigger(trigger));
+  installBestEffortBackfillTrigger();
+  props.setProperty('STRAVA_WEBHOOK_URL', relayCallback);
+  SpreadsheetApp.getUi().alert('Real-time Strava updates are enabled. The 15-minute activity poll has been removed.');
+}
+
+function installBestEffortBackfillTrigger() {
+  if (!ScriptApp.getProjectTriggers().some(trigger => trigger.getHandlerFunction() === 'backfillBestEfforts')) ScriptApp.newTrigger('backfillBestEfforts').timeBased().everyMinutes(15).create();
+}
+
+
+function accessToken() {
+  const props = PropertiesService.getScriptProperties();
+  const expiresAt = Number(props.getProperty('STRAVA_EXPIRES_AT') || 0);
+  if (props.getProperty('STRAVA_ACCESS_TOKEN') && Date.now() / 1000 < expiresAt - 300) return props.getProperty('STRAVA_ACCESS_TOKEN');
+  const token = stravaRequest('https://www.strava.com/oauth/token', {
+    method: 'post',
+    payload: {
+      client_id: STRAVA_CLIENT_ID,
+      client_secret: requiredProperty('STRAVA_CLIENT_SECRET'),
+      refresh_token: requiredProperty('STRAVA_REFRESH_TOKEN'),
+      grant_type: 'refresh_token'
+    }
+  }, false);
+  storeToken(token);
+  return token.access_token;
+}
+
+function storeToken(token) {
+  if (!token.access_token || !token.refresh_token) throw new Error('Strava did not return valid tokens.');
+  PropertiesService.getScriptProperties().setProperties({
+    STRAVA_ACCESS_TOKEN: token.access_token,
+    STRAVA_REFRESH_TOKEN: token.refresh_token,
+    STRAVA_EXPIRES_AT: String(token.expires_at || 0)
+  });
+}
+
+function installRefreshTrigger() {
+  ScriptApp.getProjectTriggers()
+    .filter(trigger => trigger.getHandlerFunction() === 'syncActivities')
+    .forEach(trigger => ScriptApp.deleteTrigger(trigger));
+  ScriptApp.newTrigger('syncActivities').timeBased().everyMinutes(15).create();
+}
+
+function disconnectStrava() {
+  const props = PropertiesService.getScriptProperties();
+  ScriptApp.getProjectTriggers()
+    .filter(trigger => ['syncActivities', 'processStravaWebhookQueue', 'backfillBestEfforts'].includes(trigger.getHandlerFunction()))
+    .forEach(trigger => ScriptApp.deleteTrigger(trigger));
+  ['STRAVA_ACCESS_TOKEN','STRAVA_REFRESH_TOKEN','STRAVA_EXPIRES_AT','STRAVA_CLIENT_SECRET','LAST_ACTIVITY_EPOCH','BEST_EFFORT_CURSOR','BEST_EFFORT_VERSION'].forEach(key => props.deleteProperty(key));
+  SpreadsheetApp.getUi().alert('Strava has been disconnected. Existing spreadsheet rows were kept.');
+}
+function getActivitySheet(spreadsheet) {
+  return spreadsheet.getSheetByName(ACTIVITY_SHEET) || spreadsheet.insertSheet(ACTIVITY_SHEET);
+}
+
+function readExisting(sheet) {
+  const rows = new Map();
+  if (sheet.getLastRow() < 2) return rows;
+  sheet.getRange(2, 1, sheet.getLastRow() - 1, HEADERS.length).getValues().forEach(row => {
+    const id = row[13];
+    if (id) rows.set(String(id), row);
+  });
+  return rows;
+}
+
+function formatActivitySheet(sheet, rowCount) {
+  sheet.setFrozenRows(1);
+  sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold').setBackground('#dbeafe');
+  if (rowCount) {
+    sheet.getRange(2, 1, rowCount, 1).setNumberFormat('dd/MM/yyyy hh:mm');
+    sheet.getRange(2, 4, rowCount, 9).setNumberFormat('0.00');
+    sheet.getRange(2, 15, rowCount, 1).setNumberFormat('dd/MM/yyyy hh:mm');
+  }
+  sheet.autoResizeColumns(1, HEADERS.length);
+  sheet.setColumnWidth(2, 280);
+  sheet.setColumnWidth(13, 250);
+  if (!sheet.getFilter() && sheet.getLastRow() > 1) sheet.getRange(1, 1, sheet.getLastRow(), HEADERS.length).createFilter();
+}
+
+function stravaRequest(url, options, authenticate = true) {
+  const response = UrlFetchApp.fetch(url, Object.assign({muteHttpExceptions: true}, options || {}));
+  const status = response.getResponseCode();
+  const body = response.getContentText();
+  if (status < 200 || status >= 300) throw new Error('Strava returned ' + status + ': ' + body.slice(0, 300));
+  return body ? JSON.parse(body) : {};
+}
+
+function requiredProperty(name) {
+  const value = PropertiesService.getScriptProperties().getProperty(name);
+  if (!value) throw new Error(name + ' has not been configured. Run Setup Strava first.');
+  return value;
+}
+
+function toQuery(values) {
+  return Object.keys(values).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(values[key])).join('&');
+}
+
+function numberOrBlank(value, places) {
+  return value === undefined || value === null ? '' : round(Number(value), places);
+}
+
+function round(value, places) {
+  const factor = Math.pow(10, places);
+  return Math.round((Number(value) + Number.EPSILON) * factor) / factor;
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>'"]/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[character]));
+}

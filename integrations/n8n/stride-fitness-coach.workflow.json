@@ -1,0 +1,121 @@
+{
+  "name": "Stride Fitness Coach Bridge",
+  "nodes": [
+    {
+      "parameters": {"httpMethod":"POST","path":"stride-coach/context","authentication":"headerAuth","responseMode":"responseNode","options":{}},
+      "id": "0a412801-e564-4f46-8337-12e855b41001",
+      "name": "Publish Coaching Context",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-680,-300],
+      "webhookId": "c431117c-f07e-45cd-a2b3-d7834eeb1001"
+    },
+    {
+      "parameters": {"jsCode":"const body = $json.body ?? $json;\nif (!/^\\d{4}-\\d{2}-\\d{2}$/.test(body.targetWeekStart ?? '')) throw new Error('targetWeekStart must be YYYY-MM-DD');\nconst state = $getWorkflowStaticData('global');\nstate.contexts = state.contexts ?? {};\nstate.contexts[body.targetWeekStart] = {...body, publishedAt: new Date().toISOString()};\nconst keys = Object.keys(state.contexts).sort().reverse();\nfor (const key of keys.slice(8)) delete state.contexts[key];\nreturn [{json:{ok:true,targetWeekStart:body.targetWeekStart}}];"},
+      "id": "1970c3f7-9676-4f14-865b-6720c4791002",
+      "name": "Store Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-430,-300]
+    },
+    {
+      "parameters": {"respondWith":"json","responseBody":"={{ $json }}","options":{}},
+      "id": "0665b50b-7a1f-42dc-8fac-bb890a151003",
+      "name": "Context Published",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [-180,-300]
+    },
+    {
+      "parameters": {"path":"stride-coach/context","authentication":"headerAuth","responseMode":"responseNode","options":{}},
+      "id": "d9722403-811b-4087-9757-aad36d4d1004",
+      "name": "Get Coaching Context",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-680,-80],
+      "webhookId": "4c94ff19-6631-4bd2-8a4c-b1489cb21004"
+    },
+    {
+      "parameters": {"jsCode":"const start = $json.query?.targetWeekStart ?? '';\nconst state = $getWorkflowStaticData('global');\nconst context = state.contexts?.[start];\nreturn [{json:context ? {found:true,context} : {found:false,targetWeekStart:start,message:'No coaching context has been published for this week.'}}];"},
+      "id": "4d48d4ae-b52e-4139-aa15-1f7b77341005",
+      "name": "Load Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-430,-80]
+    },
+    {
+      "parameters": {"respondWith":"json","responseBody":"={{ $json }}","options":{}},
+      "id": "2322b4c5-c1d7-4080-9e46-55b7caa21006",
+      "name": "Return Context",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [-180,-80]
+    },
+    {
+      "parameters": {"httpMethod":"POST","path":"stride-coach/report","authentication":"headerAuth","responseMode":"responseNode","options":{}},
+      "id": "a4b1d98c-6c03-437b-96b2-88b468641007",
+      "name": "Submit Coaching Report",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-680,150],
+      "webhookId": "58c73145-d10a-4898-bad6-d89b23251007"
+    },
+    {
+      "parameters": {"jsCode":"const report = $json.body ?? $json;\nconst required = ['id','targetWeekStart','createdAt','coachName','trainingSummary','weeklyFocus','runDistanceMultiplier','cycleDistanceMultiplier','scheduleObservations','targetFeedback','availabilityTip'];\nfor (const key of required) if (report[key] === undefined || report[key] === null || report[key] === '') throw new Error(`Missing ${key}`);\nif (!/^\\d{4}-\\d{2}-\\d{2}$/.test(report.targetWeekStart)) throw new Error('targetWeekStart must be YYYY-MM-DD');\nfor (const key of ['runDistanceMultiplier','cycleDistanceMultiplier']) if (typeof report[key] !== 'number' || report[key] < 0.8 || report[key] > 1.1) throw new Error(`${key} must be between 0.8 and 1.1`);\nif (!Array.isArray(report.scheduleObservations) || report.scheduleObservations.length > 6) throw new Error('scheduleObservations is invalid');\nif (!Array.isArray(report.targetFeedback) || report.targetFeedback.length > 6) throw new Error('targetFeedback is invalid');\nconst state = $getWorkflowStaticData('global');\nstate.reports = state.reports ?? {};\nstate.reports[report.targetWeekStart] = report;\nconst keys = Object.keys(state.reports).sort().reverse();\nfor (const key of keys.slice(8)) delete state.reports[key];\nreturn [{json:{ok:true,targetWeekStart:report.targetWeekStart}}];"},
+      "id": "ed267695-9954-4ee7-9a31-e25cf6c11008",
+      "name": "Validate and Store Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-430,150]
+    },
+    {
+      "parameters": {"respondWith":"json","responseBody":"={{ $json }}","options":{}},
+      "id": "c728d19b-d147-4b71-a88d-59cf42931009",
+      "name": "Report Accepted",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [-180,150]
+    },
+    {
+      "parameters": {"path":"stride-coach/report","authentication":"headerAuth","responseMode":"responseNode","options":{}},
+      "id": "0c43fdfc-2339-4f78-800c-8f04ab4c1010",
+      "name": "Get Coaching Report",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-680,370],
+      "webhookId": "71f28b9b-3583-49b6-a3c7-7904bb401010"
+    },
+    {
+      "parameters": {"jsCode":"const start = $json.query?.targetWeekStart ?? '';\nconst state = $getWorkflowStaticData('global');\nconst report = state.reports?.[start];\nreturn [{json:report ? {found:true,report} : {found:false,targetWeekStart:start,message:'No coaching report has been submitted for this week.'}}];"},
+      "id": "2f61cf0d-dcb4-492a-a3a5-880328ba1011",
+      "name": "Load Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-430,370]
+    },
+    {
+      "parameters": {"respondWith":"json","responseBody":"={{ $json }}","options":{}},
+      "id": "826eaf43-0cc8-4148-a8a0-594450fe1012",
+      "name": "Return Report",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [-180,370]
+    }
+  ],
+  "connections": {
+    "Publish Coaching Context":{"main":[[{"node":"Store Context","type":"main","index":0}]]},
+    "Store Context":{"main":[[{"node":"Context Published","type":"main","index":0}]]},
+    "Get Coaching Context":{"main":[[{"node":"Load Context","type":"main","index":0}]]},
+    "Load Context":{"main":[[{"node":"Return Context","type":"main","index":0}]]},
+    "Submit Coaching Report":{"main":[[{"node":"Validate and Store Report","type":"main","index":0}]]},
+    "Validate and Store Report":{"main":[[{"node":"Report Accepted","type":"main","index":0}]]},
+    "Get Coaching Report":{"main":[[{"node":"Load Report","type":"main","index":0}]]},
+    "Load Report":{"main":[[{"node":"Return Report","type":"main","index":0}]]}
+  },
+  "pinData": {},
+  "settings": {"executionOrder":"v1"},
+  "active": false,
+  "versionId": "407658cd-fda2-41cc-a5da-96613bea1013",
+  "meta": {"templateCredsSetupCompleted": false},
+  "tags": []
+}

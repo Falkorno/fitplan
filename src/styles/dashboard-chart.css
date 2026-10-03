@@ -1,0 +1,19 @@
+.activity-chart-legend{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:.45rem .8rem;margin-top:.6rem}
+.activity-chart-legend span{display:inline-flex;align-items:center;gap:.3rem;color:var(--muted);font-size:.58rem;font-weight:800}
+.activity-chart-legend i{width:.48rem;height:.48rem;border-radius:50%}
+.activity-chart-legend i.run{background:var(--sport-run)}
+.activity-chart-legend i.bike{background:var(--sport-cycle)}
+.activity-chart-legend i.strength{background:var(--sport-strength)}
+.dashboard-bars{height:14rem;grid-template-columns:repeat(7,minmax(0,1fr));margin-top:.55rem}
+.dashboard-bars>div{min-width:0;gap:.38rem}
+.dashboard-bars>div>.dashboard-bar-track{display:flex;height:100%;align-items:flex-end;overflow:hidden;border:1px solid color-mix(in srgb,var(--line) 78%,transparent);border-radius:.65rem;background:repeating-linear-gradient(to top,transparent 0,transparent calc(25% - 1px),color-mix(in srgb,var(--line) 48%,transparent) 25%),color-mix(in srgb,var(--soft) 72%,var(--panel));padding:.2rem}
+.dashboard-bar-track>.dashboard-bar-fill{display:flex;width:100%;min-height:0;overflow:hidden;flex-direction:column-reverse;border-radius:.45rem;padding:0;box-shadow:0 5px 12px #10221818;transition:height .25s ease}
+.dashboard-bars .dashboard-bar-fill i{display:block;width:100%;min-height:2px;border-radius:0}
+.dashboard-bars .dashboard-bar-fill i.run{background:linear-gradient(90deg,color-mix(in srgb,var(--sport-run) 78%,white),var(--sport-run))}
+.dashboard-bars .dashboard-bar-fill i.bike{background:linear-gradient(90deg,color-mix(in srgb,var(--sport-cycle) 76%,white),var(--sport-cycle))}
+.dashboard-bars .dashboard-bar-fill i.strength{background:linear-gradient(90deg,color-mix(in srgb,var(--sport-strength) 76%,white),var(--sport-strength))}
+.dashboard-bar-fill i+i{border-bottom:1px solid #ffffff75}
+.dashboard-bars .is-current-day .dashboard-bar-track{border-color:var(--state-complete)}
+.dashboard-bars small{font-weight:800}
+.dashboard-bars b{top:.35rem;right:.15rem;bottom:auto;left:.15rem;z-index:1;color:var(--ink);text-shadow:0 1px 2px var(--panel)}
+@media(max-width:700px){.activity-chart-legend{justify-content:flex-start}.dashboard-bars{height:11.5rem;gap:.28rem}.dashboard-bars b{font-size:.5rem}}

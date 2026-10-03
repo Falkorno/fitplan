@@ -1,0 +1,191 @@
+openapi: 3.1.0
+info:
+  title: Stride Weekly Coaching Bridge
+  version: 1.0.0
+  description: Fetch a Stride training summary and submit a structured weekly coaching report.
+servers:
+  - url: https://n8n.jamesdt.synology.me/webhook
+paths:
+  /stride-coach/context:
+    get:
+      operationId: getStrideCoachingContext
+      summary: Fetch the training context for a target week
+      parameters:
+        - name: targetWeekStart
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Context lookup result
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  found: {type: boolean}
+                  targetWeekStart: {type: string, format: date}
+                  message: {type: string}
+                  context:
+                    $ref: '#/components/schemas/CoachingContext'
+  /stride-coach/report:
+    post:
+      operationId: submitStrideCoachingReport
+      summary: Submit the completed coaching report
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CoachingReport'
+      responses:
+        '200':
+          description: Report accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  targetWeekStart:
+                    type: string
+                    format: date
+components:
+  securitySchemes:
+    strideCoachKey:
+      type: apiKey
+      in: header
+      name: X-Stride-Coach-Key
+  schemas:
+    CoachingContext:
+      type: object
+      additionalProperties: false
+      properties:
+        targetWeekStart: {type: string, format: date}
+        generatedAt: {type: string, format: date-time}
+        publishedAt: {type: string, format: date-time}
+        userId: {type: string}
+        goals:
+          type: object
+          additionalProperties: false
+          properties:
+            weeklyRunKm: {type: number}
+            weeklyCycleKm: {type: number}
+            workoutSessions: {type: integer}
+            workoutDays:
+              type: array
+              items: {type: integer}
+        wfhDays:
+          type: array
+          items: {type: integer}
+        previousWfhDays:
+          type: array
+          items: {type: integer}
+        includeSpeedWork: {type: boolean}
+        recentTrainingHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrainingWeekSummary'
+        recentRecovery:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecoveryEntry'
+        draftSessions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DraftSession'
+    TrainingWeekSummary:
+      type: object
+      additionalProperties: false
+      properties:
+        startDate: {type: string, format: date}
+        plannedSessions: {type: integer}
+        completedSessions: {type: integer}
+        skippedSessions: {type: integer}
+        adherencePercent: {type: number}
+        plannedRunKm: {type: number}
+        completedRunKm: {type: number}
+        completedCycleKm: {type: number}
+        longestRunKm: {type: number}
+        hardSessions: {type: integer}
+        completedStrengthSessions: {type: integer}
+        averageEffort: {type: number}
+        wfhDays:
+          type: array
+          items: {type: integer}
+    RecoveryEntry:
+      type: object
+      additionalProperties: false
+      properties:
+        date: {type: string, format: date}
+        energy: {type: number}
+        soreness: {type: number}
+    DraftSession:
+      type: object
+      additionalProperties: false
+      properties:
+        id: {type: string}
+        date: {type: string, format: date}
+        title: {type: string}
+        category: {type: string}
+        intensity: {type: string}
+        completed: {type: boolean}
+        skipped: {type: boolean}
+        locked: {type: boolean}
+        plannedDurationMinutes: {type: number}
+        plannedDistanceKm: {type: number}
+        actualDurationMinutes: {type: number}
+        actualDistanceKm: {type: number}
+        perceivedEffort: {type: number}
+        stravaActivityId: {type: string}
+    CoachingReport:
+      type: object
+      additionalProperties: false
+      required: [id, targetWeekStart, createdAt, coachName, trainingSummary, weeklyFocus, runDistanceMultiplier, cycleDistanceMultiplier, scheduleObservations, targetFeedback, availabilityTip]
+      properties:
+        id:
+          type: string
+        targetWeekStart:
+          type: string
+          format: date
+        createdAt:
+          type: string
+          format: date-time
+        coachName:
+          type: string
+          maxLength: 100
+        trainingSummary:
+          type: string
+          maxLength: 1200
+        weeklyFocus:
+          type: string
+          maxLength: 500
+        runDistanceMultiplier:
+          type: number
+          minimum: 0.8
+          maximum: 1.1
+        cycleDistanceMultiplier:
+          type: number
+          minimum: 0.8
+          maximum: 1.1
+        scheduleObservations:
+          type: array
+          maxItems: 6
+          items:
+            type: string
+            maxLength: 400
+        targetFeedback:
+          type: array
+          maxItems: 6
+          items:
+            type: string
+            maxLength: 400
+        availabilityTip:
+          type: string
+          maxLength: 500
+security:
+  - strideCoachKey: []
